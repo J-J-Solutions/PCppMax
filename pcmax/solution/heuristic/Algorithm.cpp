@@ -1,5 +1,5 @@
+#include "../base/Algorithm.h"
 #include "../TaskManager.h"
-#include <iostream>
 #include <algorithm>
 
 using namespace std;
@@ -9,9 +9,9 @@ using namespace std;
  * Given a number of machines, number of tasks, and a duration of each task:
  * 1) Sort the task durations
  * 2) Calculate average time each machine will spend completing tasks.
- *    This average value is equal to sum of task durations divided by the number of machines.
+ *    This average value is equal to the sum of task durations divided by the number of machines.
  * 3) For each machine:
- *    Assign shortest available task and longest available task alternately.
+ *    Assign longest available task and shortest available task alternately.
  *    Mark each assigned task as unavailable.
  *    When sum of durations of assigned tasks exceeds average, move on to the next machine.
  * 4) If there are any tasks left assign them according to the LPT algorithm (Longest Processing Time)
@@ -22,25 +22,16 @@ using namespace std;
  *    Else cancel the assignment and end the algorithm
  */
 
-int main() {
-    std::iostream::sync_with_stdio(false);
-
-    int machines, tasks;
-    cin >> machines >> tasks;
+long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
     long long totalWorkTime = 0;
 
-    TaskManager taskManager(machines);
-
-    int *taskWorkTime = new int[tasks];
-    for (int t = 0, workTime; t < tasks; ++t) {
-        cin >> workTime;
-        totalWorkTime += workTime;
-        taskWorkTime[t] = workTime;
-    }
+    for (int t = 0; t < tasks; ++t) totalWorkTime += taskWorkTime[t];
 
     long long averageWorkTime = totalWorkTime / machines;
 
     sort(taskWorkTime, taskWorkTime + tasks);
+
+    TaskManager taskManager(machines);
 
     int lower = 0, upper = tasks - 1;
     for (int m = 0; m < machines && lower <= upper; ++m) {
@@ -60,8 +51,6 @@ int main() {
         taskManager.addMachine(machine);
     }
 
-    delete[] taskWorkTime;
-
     long long possiblyLowerMax = taskManager.peekLongestWorkingMachine().getTotalWorkTime(), pcMax;
     do {
         pcMax = possiblyLowerMax;
@@ -73,7 +62,5 @@ int main() {
         possiblyLowerMax = taskManager.peekLongestWorkingMachine().getTotalWorkTime();
     } while (possiblyLowerMax < pcMax);
 
-    cout << pcMax << endl;
-
-    return 0;
+    return pcMax;
 }
