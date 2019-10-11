@@ -21,7 +21,6 @@ long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
         }
 
         pcMax = min(pcMax, taskManager.peekLongestWorkingMachine().getTotalWorkTime());
-        cout << "Current PCMax: " << pcMax << endl;
     } while (next_permutation(taskWorkTime, taskWorkTime + tasks));
 
     return pcMax;
