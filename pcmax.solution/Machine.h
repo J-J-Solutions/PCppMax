@@ -5,6 +5,7 @@
 
 class Machine {
     long long totalWorkTime = 0L;
+
     std::map<int, int> tasks;
 public:
     void addTask(int workTime);

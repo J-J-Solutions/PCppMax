@@ -4,6 +4,24 @@
 
 using namespace std;
 
+/*
+ * Idea for heuristic algorithm:
+ * Given a number of machines, number of tasks, and a duration of each task:
+ * 1) Sort the task durations
+ * 2) Calculate average time each machine will spend completing tasks.
+ *    This average value is equal to sum of task durations divided by the number of machines.
+ * 3) For each machine:
+ *    Assign shortest available task and longest available task alternately.
+ *    Mark each assigned task as unavailable.
+ *    When sum of durations of assigned tasks exceeds average, move on to the next machine.
+ * 4) If there are any tasks left assign them according to the LPT algorithm (Longest Processing Time)
+ * 5) Calculate how long it will take for all the tasks to complete (cmax)
+ * 6) Assign the shortest task of the longest working machine to the shortest working machine.
+ *    Calculate new cmax value.
+ *    If it it better (smaller) than previous cmax value, repeat this step.
+ *    Else cancel the assignment and end the algorithm
+ */
+
 int main() {
     std::iostream::sync_with_stdio(false);
 

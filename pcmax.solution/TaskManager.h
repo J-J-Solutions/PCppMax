@@ -5,8 +5,9 @@
 #include <list>
 
 typedef std::list<Machine, std::allocator<Machine>> MACHINES;
-typedef std::_Rb_tree_iterator<std::pair<const long long, MACHINES>> ITERATOR;
-typedef std::_Rb_tree_const_iterator<std::pair<const long long, MACHINES>> CONST_ITERATOR;
+typedef std::pair<const long long, MACHINES> ENTRY;
+typedef std::_Rb_tree_iterator<ENTRY> ITERATOR;
+typedef std::_Rb_tree_const_iterator<ENTRY> CONST_ITERATOR;
 
 class TaskManager {
     std::map<long long, MACHINES> machines;
