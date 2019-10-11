@@ -6,18 +6,19 @@ using namespace std;
 
 int main() {
     iostream::sync_with_stdio(false);
+
     int machines, tasks;
-    std::cin >> machines >> tasks;
+    cin >> machines >> tasks;
 
     int *taskWorkTime = new int[tasks];
-    for (int t = 0; t < tasks; ++t) std::cin >> taskWorkTime[t];
+    for (int t = 0; t < tasks; ++t) cin >> taskWorkTime[t];
 
-    auto begin = std::chrono::system_clock::now();
+    auto begin = chrono::system_clock::now();
     long long solution = Algorithm::solve(machines, tasks, taskWorkTime);
-    auto end = std::chrono::system_clock::now();
-    std::cout << "Solution found in "
-              << std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count()
-              << " [ns]" << std::endl;
+    auto end = chrono::system_clock::now();
+    cout << "Solution found in "
+         << chrono::duration_cast<chrono::nanoseconds>(end - begin).count()
+         << " [ns]" << endl;
 
     delete[] taskWorkTime;
 
