@@ -20,7 +20,7 @@
 //
 //----------------------------------------------------------------------------
 
-#include "Algorithm.h"
+#include "solution/base/Algorithm.h"
 #include <iostream>
 #include <chrono>
 #include <sstream>

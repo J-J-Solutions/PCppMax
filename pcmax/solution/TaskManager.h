@@ -20,8 +20,8 @@
 //
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_TASKMANAGER_H
-#define PCMAX_TASKMANAGER_H
+#ifndef PCMAX_TASK_MANAGER_H
+#define PCMAX_TASK_MANAGER_H
 
 #include "Machine.h"
 #include <list>
@@ -50,4 +50,4 @@ public:
     Machine pollLongestWorkingMachine();
 };
 
-#endif //PCMAX_TASKMANAGER_H
+#endif //PCMAX_TASK_MANAGER_H
