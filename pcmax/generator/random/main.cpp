@@ -21,13 +21,31 @@
 //----------------------------------------------------------------------------
 
 #include <iostream>
-#include "random/RandomInstanceGenerator.h"
+#include <fstream>
+#include "RandomInstanceGenerator.h"
+
+const std::string ABSOLUTE_PATH = "D:/CLionProjects/PCMax/pcmax/generator/random";
+
+std::string instance(int n) {
+    return ABSOLUTE_PATH + "/random_instance_" + std::to_string(n) + ".txt";
+}
+
+bool exists(const std::string &file) {
+    std::ifstream stream(file);
+    return stream.good();
+}
 
 int main() {
+    int counter = 0;
+    while (exists(instance(counter))) ++counter;
+
+    std::cout << "How many instances would you like created?" << std::endl;
+    int instances;
+    std::cin >> instances;
+
     RandomInstanceGenerator generator;
-    for (int i = 0; i < 2; ++i) {
+    while (instances--) {
         generator.generateNewInstance();
-//        generator.writeToStream(&std::cout);
-        generator.writeToFile("D:/CLionProjects/PCMax/pcmax/generator/instance" + std::to_string(i) + ".txt");
+        generator.writeToFile(instance(counter++));
     }
 }
