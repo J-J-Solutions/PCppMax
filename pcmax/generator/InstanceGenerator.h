@@ -43,13 +43,13 @@ public:
 
     virtual void generateNewInstance() = 0;
 
-    [[nodiscard]] int getMachines() const;
+//    [[nodiscard]] int getMachines() const;
 
-    [[nodiscard]] int getTasks() const;
+//    [[nodiscard]] int getTasks() const;
 
-    [[nodiscard]] int *getTaskWorkTime() const;
+//    [[nodiscard]] int *getTaskWorkTime() const;
 
-    void writeToStream(std::ostream *output);
+    virtual void writeToStream(std::ostream *output);
 
     void writeToFile(const std::string& path);
 };

@@ -20,14 +20,18 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <iostream>
-#include "random/RandomInstanceGenerator.h"
+#ifndef PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
+#define PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
 
-int main() {
-    RandomInstanceGenerator generator;
-    for (int i = 0; i < 2; ++i) {
-        generator.generateNewInstance();
-//        generator.writeToStream(&std::cout);
-        generator.writeToFile("D:/CLionProjects/PCMax/pcmax/generator/instance" + std::to_string(i) + ".txt");
-    }
-}
+#include "../InstanceGenerator.h"
+
+class OptimalInstanceGenerator: public InstanceGenerator {
+    int solution;
+
+public:
+    void generateNewInstance() override;
+
+    void writeToStream(std::ostream *output) override;
+};
+
+#endif //PCMAX_OPTIMALINSTANCEGENERATOR_H

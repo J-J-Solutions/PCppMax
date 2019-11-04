@@ -20,41 +20,32 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <ostream>
-#include <fstream>
 #include <iostream>
-#include "InstanceGenerator.h"
+#include <fstream>
+#include "OptimalInstanceGenerator.h"
 
-InstanceGenerator::InstanceGenerator() :
-        mt(device()),
-        machineDistribution(DISTRIBUTION(1, 100)),
-        taskDistribution(DISTRIBUTION(10, 100)),
-        taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
+const std::string ABSOLUTE_PATH = "D:/CLionProjects/PCMax/pcmax/generator/optimal";
 
-//int InstanceGenerator::getMachines() const { return machines; }
-
-//int InstanceGenerator::getTasks() const { return tasks; }
-
-//int *InstanceGenerator::getTaskWorkTime() const { return taskWorkTime; }
-
-void InstanceGenerator::writeToStream(std::ostream *output) {
-    *output << machines << std::endl;
-    *output << tasks << std::endl;
-    for (int t = 0; t < tasks; ++t) *output << taskWorkTime[t] << std::endl;
+std::string instance(int n) {
+    return ABSOLUTE_PATH + "/optimal_instance_" + std::to_string(n) + ".txt";
 }
 
-void InstanceGenerator::writeToFile(const std::string &path) {
-    std::cerr << path << std::endl;
+bool exists(const std::string &file) {
+    std::ifstream stream(file);
+    return stream.good();
+}
 
-    std::ofstream output(path);
+int main() {
+    int counter = 0;
+    while (exists(instance(counter))) ++counter;
 
-    if (!output.is_open()) {
-        std::cerr << "Cannot open file '" << path << "'" << std::endl;
-        return;
+    std::cout << "How many instances would you like created?" << std::endl;
+    int instances;
+    std::cin >> instances;
+
+    OptimalInstanceGenerator generator;
+    while (instances--) {
+        generator.generateNewInstance();
+        generator.writeToFile(instance(counter++));
     }
-
-    writeToStream(&output);
-
-    output.close();
 }
-

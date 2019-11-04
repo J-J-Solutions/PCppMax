@@ -21,40 +21,15 @@
 //----------------------------------------------------------------------------
 
 #include <ostream>
-#include <fstream>
-#include <iostream>
-#include "InstanceGenerator.h"
+#include "OptimalInstanceGenerator.h"
 
-InstanceGenerator::InstanceGenerator() :
-        mt(device()),
-        machineDistribution(DISTRIBUTION(1, 100)),
-        taskDistribution(DISTRIBUTION(10, 100)),
-        taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
-
-//int InstanceGenerator::getMachines() const { return machines; }
-
-//int InstanceGenerator::getTasks() const { return tasks; }
-
-//int *InstanceGenerator::getTaskWorkTime() const { return taskWorkTime; }
-
-void InstanceGenerator::writeToStream(std::ostream *output) {
-    *output << machines << std::endl;
-    *output << tasks << std::endl;
-    for (int t = 0; t < tasks; ++t) *output << taskWorkTime[t] << std::endl;
+void OptimalInstanceGenerator::generateNewInstance() {
+    delete[] taskWorkTime;
+    //TODO assign optimal solution value to 'solution' variable
+    //TODO implement optimal instance generator based on 'solution' variable
 }
 
-void InstanceGenerator::writeToFile(const std::string &path) {
-    std::cerr << path << std::endl;
-
-    std::ofstream output(path);
-
-    if (!output.is_open()) {
-        std::cerr << "Cannot open file '" << path << "'" << std::endl;
-        return;
-    }
-
-    writeToStream(&output);
-
-    output.close();
+void OptimalInstanceGenerator::writeToStream(std::ostream *output) {
+    InstanceGenerator::writeToStream(output);
+    *output << solution << std::endl;
 }
-
