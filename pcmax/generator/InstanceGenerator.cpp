@@ -31,11 +31,11 @@ InstanceGenerator::InstanceGenerator() :
         taskDistribution(DISTRIBUTION(10, 100)),
         taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
 
-int InstanceGenerator::getMachines() const { return machines; }
+//int InstanceGenerator::getMachines() const { return machines; }
 
-int InstanceGenerator::getTasks() const { return tasks; }
+//int InstanceGenerator::getTasks() const { return tasks; }
 
-int *InstanceGenerator::getTaskWorkTime() const { return taskWorkTime; }
+//int *InstanceGenerator::getTaskWorkTime() const { return taskWorkTime; }
 
 void InstanceGenerator::writeToStream(std::ostream *output) {
     *output << machines << std::endl;

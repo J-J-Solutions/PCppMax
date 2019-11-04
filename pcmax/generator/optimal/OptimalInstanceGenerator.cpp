@@ -20,8 +20,16 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
+#include <ostream>
 #include "OptimalInstanceGenerator.h"
 
 void OptimalInstanceGenerator::generateNewInstance() {
     delete[] taskWorkTime;
+    //TODO assign optimal solution value to 'solution' variable
+    //TODO implement optimal instance generator based on 'solution' variable
+}
+
+void OptimalInstanceGenerator::writeToStream(std::ostream *output) {
+    InstanceGenerator::writeToStream(output);
+    *output << solution << std::endl;
 }

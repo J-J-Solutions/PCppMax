@@ -26,8 +26,12 @@
 #include "../InstanceGenerator.h"
 
 class OptimalInstanceGenerator: public InstanceGenerator {
+    int solution;
+
 public:
     void generateNewInstance() override;
+
+    void writeToStream(std::ostream *output) override;
 };
 
 #endif //PCMAX_OPTIMALINSTANCEGENERATOR_H
