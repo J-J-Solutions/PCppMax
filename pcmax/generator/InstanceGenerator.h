@@ -48,6 +48,10 @@ public:
     [[nodiscard]] int getTasks() const;
 
     [[nodiscard]] int *getTaskWorkTime() const;
+
+    void writeToStream(std::ostream *output);
+
+    void writeToFile(const std::string& path);
 };
 
 #endif //PCMAX_INSTANCEGENERATOR_H

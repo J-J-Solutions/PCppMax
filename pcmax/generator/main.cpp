@@ -20,41 +20,14 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <ostream>
-#include <fstream>
 #include <iostream>
-#include "InstanceGenerator.h"
+#include "random/RandomInstanceGenerator.h"
 
-InstanceGenerator::InstanceGenerator() :
-        mt(device()),
-        machineDistribution(DISTRIBUTION(1, 100)),
-        taskDistribution(DISTRIBUTION(10, 100)),
-        taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
-
-int InstanceGenerator::getMachines() const { return machines; }
-
-int InstanceGenerator::getTasks() const { return tasks; }
-
-int *InstanceGenerator::getTaskWorkTime() const { return taskWorkTime; }
-
-void InstanceGenerator::writeToStream(std::ostream *output) {
-    *output << machines << std::endl;
-    *output << tasks << std::endl;
-    for (int t = 0; t < tasks; ++t) *output << taskWorkTime[t] << std::endl;
-}
-
-void InstanceGenerator::writeToFile(const std::string &path) {
-    std::cerr << path << std::endl;
-
-    std::ofstream output(path);
-
-    if (!output.is_open()) {
-        std::cerr << "Cannot open file '" << path << "'" << std::endl;
-        return;
+int main() {
+    RandomInstanceGenerator generator;
+    for (int i = 0; i < 2; ++i) {
+        generator.generateNewInstance();
+//        generator.writeToStream(&std::cout);
+        generator.writeToFile("D:/CLionProjects/PCMax/pcmax/generator/instance" + std::to_string(i) + ".txt");
     }
-
-    writeToStream(&output);
-
-    output.close();
 }
-
