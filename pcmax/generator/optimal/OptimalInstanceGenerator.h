@@ -26,11 +26,14 @@
 #include "../InstanceGenerator.h"
 
 class OptimalInstanceGenerator: public InstanceGenerator {
-    int solution;
+    DISTRIBUTION solutionDistrubution;
+    int solution = -1;
+    int solutionTimes = -1;
+    DISTRIBUTION optimalTaskDistrubtion;
 
 public:
     void generateNewInstance() override;
-
+    OptimalInstanceGenerator();
     void writeToStream(std::ostream *output) override;
 };
 

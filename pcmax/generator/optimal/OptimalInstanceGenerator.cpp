@@ -22,9 +22,23 @@
 
 #include <ostream>
 #include "OptimalInstanceGenerator.h"
-
+OptimalInstanceGenerator::OptimalInstanceGenerator():
+    InstanceGenerator(),
+    solutionDistrubution(DISTRIBUTION(100, 1000)),
+    optimalTaskDistrubtion(DISTRIBUTION(1, solution/2)){}
 void OptimalInstanceGenerator::generateNewInstance() {
     delete[] taskWorkTime;
+    machines = machineDistribution(mt);
+    solution = solutionDistrubution(mt);
+    solutionTimes = solution * machines;
+    std::vector<int> taskWorkTime;
+    int pom;
+    for (int t = solutionTimes; t > 0; t-=pom) {
+        pom = taskWorkTimeDistribution(mt);
+        taskWorkTime.push_back(pom);
+    }
+    tasks = taskWorkTime.size();
+
     //TODO assign optimal solution value to 'solution' variable
     //TODO implement optimal instance generator based on 'solution' variable
 }
