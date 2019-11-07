@@ -14,10 +14,15 @@ add_executable(PCMaxHeuristic
         pcmax/solution/Machine.h pcmax/solution/Machine.cpp
         pcmax/solution/TaskManager.h pcmax/solution/TaskManager.cpp)
 
-
 add_executable(PCMaxBrutal
         pcmax/main.cpp
         pcmax/solution/base/Algorithm.h pcmax/solution/brutal/Algorithm.cpp
+        pcmax/solution/Machine.h pcmax/solution/Machine.cpp
+        pcmax/solution/TaskManager.h pcmax/solution/TaskManager.cpp)
+
+add_executable(PCMaxGenetic
+        pcmax/main.cpp
+        pcmax/solution/base/Algorithm.h pcmax/solution/genetic/Algorithm.cpp
         pcmax/solution/Machine.h pcmax/solution/Machine.cpp
         pcmax/solution/TaskManager.h pcmax/solution/TaskManager.cpp)
 
