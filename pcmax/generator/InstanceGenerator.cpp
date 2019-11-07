@@ -67,5 +67,3 @@ bool InstanceGenerator::exists(const std::string &instance) {
     std::ifstream stream(instance);
     return stream.good();
 }
-
-

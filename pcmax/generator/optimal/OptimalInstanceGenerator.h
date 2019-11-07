@@ -33,6 +33,8 @@ protected:
     std::string instanceName(int n) override;
 
 public:
+    OptimalInstanceGenerator();
+
     void generateNewInstance() override;
 
     friend std::ostream &operator<<(std::ostream &os, const OptimalInstanceGenerator &generator);
