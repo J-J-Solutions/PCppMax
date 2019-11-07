@@ -24,6 +24,7 @@
 #define PCMAX_INSTANCE_GENERATOR_H
 
 #include <random>
+#include <ostream>
 
 typedef std::random_device DEVICE;
 typedef std::mt19937 MT;
@@ -38,20 +39,21 @@ protected:
     DISTRIBUTION taskWorkTimeDistribution;
 
     int machines = -1, tasks = -1, *taskWorkTime = nullptr;
+
+    virtual std::string instanceName(int n) = 0;
+
+    static bool exists(const std::string &instance);
 public:
+
     InstanceGenerator();
 
     virtual void generateNewInstance() = 0;
 
-//    [[nodiscard]] int getMachines() const;
-
-//    [[nodiscard]] int getTasks() const;
-
-//    [[nodiscard]] int *getTaskWorkTime() const;
-
-    virtual void writeToStream(std::ostream *output);
-
     void writeToFile(const std::string& path);
+
+    void generateInstances(int n);
+
+    friend std::ostream &operator<<(std::ostream &os, const InstanceGenerator &generator);
 };
 
 #endif //PCMAX_INSTANCEGENERATOR_H

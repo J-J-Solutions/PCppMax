@@ -29,3 +29,7 @@ void RandomInstanceGenerator::generateNewInstance() {
     taskWorkTime = new int[tasks];
     for (int t = 0; t < tasks; ++t) taskWorkTime[t] = taskWorkTimeDistribution(mt);
 }
+
+std::string RandomInstanceGenerator::instanceName(int n) {
+    return "random_instance_" + std::to_string(n) + ".txt";
+}

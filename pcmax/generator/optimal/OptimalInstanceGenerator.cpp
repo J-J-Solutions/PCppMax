@@ -29,7 +29,12 @@ void OptimalInstanceGenerator::generateNewInstance() {
     //TODO implement optimal instance generator based on 'solution' variable
 }
 
-void OptimalInstanceGenerator::writeToStream(std::ostream *output) {
-    InstanceGenerator::writeToStream(output);
-    *output << solution << std::endl;
+std::ostream &operator<<(std::ostream &os, const OptimalInstanceGenerator &generator) {
+    os << static_cast<const InstanceGenerator &>(generator);
+    os << generator.solution << std::endl;
+    return os;
+}
+
+std::string OptimalInstanceGenerator::instanceName(int n) {
+    return "optimal_instance_" + std::to_string(n) + ".txt";
 }
