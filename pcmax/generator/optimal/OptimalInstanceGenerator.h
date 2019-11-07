@@ -23,15 +23,21 @@
 #ifndef PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
 #define PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
 
+#include <ostream>
 #include "../InstanceGenerator.h"
 
 class OptimalInstanceGenerator: public InstanceGenerator {
-    int solution;
+    DISTRIBUTION solutionDistribution;
+    int solution = -1;
+protected:
+    std::string instanceName(int n) override;
 
 public:
+    OptimalInstanceGenerator();
+
     void generateNewInstance() override;
 
-    void writeToStream(std::ostream *output) override;
+    friend std::ostream &operator<<(std::ostream &os, const OptimalInstanceGenerator &generator);
 };
 
 #endif //PCMAX_OPTIMALINSTANCEGENERATOR_H

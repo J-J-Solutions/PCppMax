@@ -26,7 +26,9 @@
 #include "../InstanceGenerator.h"
 
 class RandomInstanceGenerator: public InstanceGenerator {
+    std::string instanceName(int n) override;
 public:
+
     void generateNewInstance() override;
 };
 

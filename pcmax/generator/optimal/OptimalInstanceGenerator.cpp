@@ -23,13 +23,32 @@
 #include <ostream>
 #include "OptimalInstanceGenerator.h"
 
+OptimalInstanceGenerator::OptimalInstanceGenerator() :
+        InstanceGenerator(),
+        solutionDistribution(DISTRIBUTION(100, 1000)) {}
+
 void OptimalInstanceGenerator::generateNewInstance() {
     delete[] taskWorkTime;
-    //TODO assign optimal solution value to 'solution' variable
-    //TODO implement optimal instance generator based on 'solution' variable
+    machines = machineDistribution(mt);
+    solution = solutionDistribution(mt);
+    int solutionTimes = solution * machines;
+    std::vector<int> tasksVector;
+    int task;
+    for (int t = solutionTimes; t > 0; t -= task) {
+        task = taskWorkTimeDistribution(mt);
+        tasksVector.push_back(task);
+    }
+    tasks = tasksVector.size();
+    taskWorkTime = new int[tasks];
+    std::copy(tasksVector.begin(), tasksVector.end(), taskWorkTime);
 }
 
-void OptimalInstanceGenerator::writeToStream(std::ostream *output) {
-    InstanceGenerator::writeToStream(output);
-    *output << solution << std::endl;
+std::ostream &operator<<(std::ostream &os, const OptimalInstanceGenerator &generator) {
+    os << static_cast<const InstanceGenerator &>(generator);
+    os << generator.solution << std::endl;
+    return os;
+}
+
+std::string OptimalInstanceGenerator::instanceName(int n) {
+    return "optimal_instance_" + std::to_string(n) + ".txt";
 }

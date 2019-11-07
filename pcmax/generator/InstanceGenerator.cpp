@@ -31,18 +31,6 @@ InstanceGenerator::InstanceGenerator() :
         taskDistribution(DISTRIBUTION(10, 100)),
         taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
 
-//int InstanceGenerator::getMachines() const { return machines; }
-
-//int InstanceGenerator::getTasks() const { return tasks; }
-
-//int *InstanceGenerator::getTaskWorkTime() const { return taskWorkTime; }
-
-void InstanceGenerator::writeToStream(std::ostream *output) {
-    *output << machines << std::endl;
-    *output << tasks << std::endl;
-    for (int t = 0; t < tasks; ++t) *output << taskWorkTime[t] << std::endl;
-}
-
 void InstanceGenerator::writeToFile(const std::string &path) {
     std::cerr << path << std::endl;
 
@@ -53,8 +41,29 @@ void InstanceGenerator::writeToFile(const std::string &path) {
         return;
     }
 
-    writeToStream(&output);
+    output << *this;
 
     output.close();
 }
 
+std::ostream &operator<<(std::ostream &os, const InstanceGenerator &generator) {
+    os << generator.machines << std::endl;
+    os << generator.tasks << std::endl;
+    for (int t = 0; t < generator.tasks; ++t) os << generator.taskWorkTime[t] << std::endl;
+    return os;
+}
+
+void InstanceGenerator::generateInstances(int n) {
+    int counter = 0;
+    while (exists(instanceName(counter))) ++counter;
+
+    while (n--) {
+        generateNewInstance();
+        writeToFile(instanceName(counter++));
+    }
+}
+
+bool InstanceGenerator::exists(const std::string &instance) {
+    std::ifstream stream(instance);
+    return stream.good();
+}
