@@ -28,6 +28,7 @@
 
 class OptimalInstanceGenerator: public InstanceGenerator {
     DISTRIBUTION solutionDistribution;
+    DISTRIBUTION optimalTaskDistribution;
     int solution = -1;
 protected:
     std::string instanceName(int n) override;

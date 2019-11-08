@@ -25,18 +25,19 @@
 
 OptimalInstanceGenerator::OptimalInstanceGenerator() :
         InstanceGenerator(),
-        solutionDistribution(DISTRIBUTION(100, 1000)) {}
+        solutionDistribution(DISTRIBUTION(100, 1000)),
+        optimalTaskDistribution(DISTRIBUTION(1)) {}
 
 void OptimalInstanceGenerator::generateNewInstance() {
     delete[] taskWorkTime;
     machines = machineDistribution(mt);
     solution = solutionDistribution(mt);
-    int solutionTimes = solution * machines;
     std::vector<int> tasksVector;
-    int task;
-    for (int t = solutionTimes; t > 0; t -= task) {
-        task = taskWorkTimeDistribution(mt);
-        tasksVector.push_back(task);
+    for (int i = 0; i < machines; ++i) {
+        for (int t = solution, task; t > 0; t -= task) {
+            task = optimalTaskDistribution(mt) % t + 1;
+            tasksVector.push_back(task);
+        }
     }
     tasks = tasksVector.size();
     taskWorkTime = new int[tasks];
