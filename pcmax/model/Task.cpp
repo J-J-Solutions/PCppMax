@@ -20,30 +20,25 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_INSTANCE_H
-#define PCMAX_INSTANCE_H
+#include "Task.h"
 
-#include <istream>
+Task::Task(int ID, int duration) : ID(ID), duration(duration) {}
 
-class Instance {
-    int machines, tasks, *taskDurations, solution;
+int Task::getID() const { return ID; }
 
-public:
-    explicit Instance(int machines = -1, int tasks = -1, int *taskDurations = nullptr, int solution = -1);
+int Task::getDuration() const { return duration; }
 
-    [[nodiscard]] int getMachines() const;
+bool Task::operator==(const Task &task) const { return ID == task.ID; }
 
-    [[nodiscard]] int getTasks() const;
+bool Task::operator!=(const Task &task) const { return !(task == *this); }
 
-    [[nodiscard]] int *getTaskDurations() const;
+bool Task::operator<(const Task &task) const {
+    if (duration < task.duration) return true;
+    else return ID < task.ID;
+}
 
-    [[nodiscard]] int getSolution() const;
+bool Task::operator>(const Task &task) const { return task < *this; }
 
-    friend std::istream &operator>>(std::istream &input, Instance &instance);
+bool Task::operator<=(const Task &task) const { return !(task < *this); }
 
-    friend std::ostream &operator<<(std::ostream &output, Instance &instance);
-
-    virtual ~Instance();
-};
-
-#endif //PCMAX_INSTANCE_H
+bool Task::operator>=(const Task &task) const { return !(*this < task); }

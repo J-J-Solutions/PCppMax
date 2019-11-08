@@ -25,25 +25,24 @@
 
 #include <algorithm>
 #include "../base/Algorithm.h"
-#include "../TaskManager.h"
 #include "../greedy/GreedyAlgorithm.h"
 
-#define LONG_LONG_MAX 9223372036854775807
+#define LONG_LONG_MAX 2147483647
 
 class BruteForceAlgorithm : public Algorithm {
 public:
-    [[nodiscard]] long long int solve(const Instance &instance) const override {
+    [[nodiscard]] int solve(const Instance &instance) const override {
         int tasks = instance.getTasks();
-        int *taskWorkTime = instance.getTaskWorkTime();
+        int *taskDurations = instance.getTaskDurations();
 
-        std::sort(taskWorkTime, taskWorkTime + tasks);
+        std::sort(taskDurations, taskDurations + tasks);
 
-        long long pcMax = LONG_LONG_MAX;
+        int pcMax = LONG_LONG_MAX;
         GreedyAlgorithm algorithm;
 
         do {
             pcMax = std::min(pcMax, algorithm.solve(instance));
-        } while (std::next_permutation(taskWorkTime, taskWorkTime + tasks));
+        } while (std::next_permutation(taskDurations, taskDurations + tasks));
 
         return pcMax;
     }

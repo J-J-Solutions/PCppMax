@@ -24,24 +24,24 @@
 #define PCMAX_GREEDY_ALGORITHM_H
 
 #include "../base/Algorithm.h"
-#include "../TaskManager.h"
+#include "../../model/Scheduler.h"
 
 class GreedyAlgorithm : public Algorithm {
 public:
-    [[nodiscard]] long long int solve(const Instance &instance) const override {
+    [[nodiscard]] int solve(const Instance &instance) const override {
         int machines = instance.getMachines();
         int tasks = instance.getTasks();
-        int *taskWorkTime = instance.getTaskWorkTime();
+        int *taskDurations = instance.getTaskDurations();
 
-        TaskManager taskManager(machines);
+        Scheduler scheduler(machines);
 
         for (int t = 0; t < tasks; ++t) {
-            auto machine = taskManager.pollShortestWorkingMachine();
-            machine.addTask(taskWorkTime[t]);
-            taskManager.addMachine(machine);
+            auto worker = scheduler.pollFirstAvailableWorker();
+            worker.addTask(Task(t, taskDurations[t]));
+            scheduler.addWorker(worker);
         }
 
-        return taskManager.peekLongestWorkingMachine().getTotalWorkTime();
+        return scheduler.peekLastAvailableWorker().getTotalWorkTime();
     }
 };
 

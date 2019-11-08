@@ -29,7 +29,7 @@ Generator::Generator() :
         mt(device()),
         machineDistribution(DISTRIBUTION(1, 100)),
         taskDistribution(DISTRIBUTION(10, 100)),
-        taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
+        taskDurationDistribution(DISTRIBUTION(20, 100)) {}
 
 void Generator::writeInstanceToFile(const std::string &path) {
     std::cerr << path << std::endl;
@@ -63,9 +63,3 @@ bool Generator::exists(const std::string &instance) {
 Generator::~Generator() {
     delete instance;
 }
-
-void Generator::generate() {
-    delete instance;
-    instance = new Instance;
-}
-

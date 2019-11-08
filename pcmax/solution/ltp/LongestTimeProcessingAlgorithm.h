@@ -29,9 +29,9 @@
 
 class LongestTimeProcessingAlgorithm : public Algorithm {
 public:
-    [[nodiscard]] long long int solve(const Instance &instance) const override {
+    [[nodiscard]] int solve(const Instance &instance) const override {
         int tasks = instance.getTasks();
-        int *taskWorkTime = instance.getTaskWorkTime();
+        int *taskWorkTime = instance.getTaskDurations();
         std::sort(taskWorkTime, taskWorkTime + tasks, std::greater<>());
         return GreedyAlgorithm().solve(instance);
     }

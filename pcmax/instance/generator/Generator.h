@@ -36,7 +36,7 @@ protected:
     MT mt;
     DISTRIBUTION machineDistribution;
     DISTRIBUTION taskDistribution;
-    DISTRIBUTION taskWorkTimeDistribution;
+    DISTRIBUTION taskDurationDistribution;
 
     Instance *instance = nullptr;
 
@@ -46,7 +46,7 @@ protected:
 
     void writeInstanceToFile(const std::string &path);
 
-    virtual void generate();
+    virtual void generate() = 0;
 
 public:
     Generator();

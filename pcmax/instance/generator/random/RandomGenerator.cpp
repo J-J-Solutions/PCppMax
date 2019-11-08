@@ -23,16 +23,14 @@
 #include "RandomGenerator.h"
 
 void RandomGenerator::generate() {
-    Generator::generate();
+    delete Generator::instance;
 
     int machines = machineDistribution(mt);
     int tasks = taskDistribution(mt);
-    int *taskWorkTime = new int[tasks];
-    for (int t = 0; t < tasks; ++t) taskWorkTime[t] = taskWorkTimeDistribution(mt);
+    int *taskDurations = new int[tasks];
+    for (int t = 0; t < tasks; ++t) taskDurations[t] = taskDurationDistribution(mt);
 
-    instance->setMachines(machines);
-    instance->setTasks(tasks);
-    instance->setTaskWorkTime(taskWorkTime);
+    Generator::instance = new Instance(machines, tasks, taskDurations);
 }
 
 std::string RandomGenerator::instanceName(int n) {
