@@ -34,7 +34,7 @@ protected:
 public:
     OptimalGenerator();
 
-    void generateNewInstance() override;
+    void generate() override;
 };
 
 #endif //PCMAX_OPTIMALINSTANCEGENERATOR_H

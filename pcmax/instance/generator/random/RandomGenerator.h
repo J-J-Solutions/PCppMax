@@ -30,7 +30,7 @@ class RandomGenerator : public Generator {
 
 public:
 
-    void generateNewInstance() override;
+    void generate() override;
 };
 
 #endif //PCMAX_RANDOMINSTANCEGENERATOR_H

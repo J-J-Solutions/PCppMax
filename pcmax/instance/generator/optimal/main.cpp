@@ -20,12 +20,10 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <iostream>
+#include "../GeneratorWrapper.h"
 #include "OptimalGenerator.h"
 
 int main() {
-    std::cout << "How many instances would you like created?" << std::endl;
-    int instances;
-    std::cin >> instances;
-    OptimalGenerator().generate(instances);
+    OptimalGenerator generator;
+    GeneratorWrapper::generateWithFeedback(&generator);
 }

@@ -22,8 +22,8 @@
 
 #include "RandomGenerator.h"
 
-void RandomGenerator::generateNewInstance() {
-    Generator::generateNewInstance();
+void RandomGenerator::generate() {
+    Generator::generate();
 
     int machines = machineDistribution(mt);
     int tasks = taskDistribution(mt);

@@ -51,7 +51,7 @@ void Generator::generate(int instances) {
     while (exists(instanceName(counter))) ++counter;
 
     while (instances--) {
-        generateNewInstance();
+        generate();
         writeInstanceToFile(instanceName(counter++));
     }
 }
@@ -64,7 +64,7 @@ Generator::~Generator() {
     delete instance;
 }
 
-void Generator::generateNewInstance() {
+void Generator::generate() {
     delete instance;
     instance = new Instance;
 }

@@ -46,7 +46,7 @@ protected:
 
     void writeInstanceToFile(const std::string &path);
 
-    virtual void generateNewInstance();
+    virtual void generate();
 
 public:
     Generator();

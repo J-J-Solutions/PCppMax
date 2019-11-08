@@ -20,40 +20,14 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <ostream>
-#include "OptimalGenerator.h"
+#ifndef PCMAX_GENERATOR_WRAPPER_H
+#define PCMAX_GENERATOR_WRAPPER_H
 
-OptimalGenerator::OptimalGenerator() :
-        Generator(),
-        solutionDistribution(DISTRIBUTION(100, 1000)) {}
+#include "Generator.h"
 
-void OptimalGenerator::generate() {
-    Generator::generate();
+class GeneratorWrapper {
+public:
+    static void generateWithFeedback(Generator *generator);
+};
 
-    int machines = machineDistribution(mt);
-    int solution = solutionDistribution(mt);
-
-    std::vector<int> tasksVector;
-    // reserve excessive amount of memory to prevent reallocation
-    tasksVector.reserve(machines * solution);
-
-    for (int m = 0; m < machines; ++m) {
-        for (int capacity = solution, task; capacity > 0; capacity -= task) {
-            task = taskWorkTimeDistribution(mt) % capacity + 1;
-            tasksVector.push_back(task);
-        }
-    }
-
-    int tasks = tasksVector.size();
-    int *taskWorkTime = new int[tasks];
-    std::copy(tasksVector.begin(), tasksVector.end(), taskWorkTime);
-
-    instance->setMachines(machines);
-    instance->setTasks(tasks);
-    instance->setTaskWorkTime(taskWorkTime);
-    instance->setSolution(solution);
-}
-
-std::string OptimalGenerator::instanceName(int n) {
-    return "optimal_instance_" + std::to_string(n) + ".txt";
-}
+#endif //PCMAX_GENERATORWRAPPER_H

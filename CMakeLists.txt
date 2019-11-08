@@ -46,11 +46,13 @@ add_executable(LTP
 add_executable(RandomGenerator
         pcmax/instance/generator/random/main.cpp
         pcmax/instance/generator/Generator.h pcmax/instance/generator/Generator.cpp
-        pcmax/instance/generator/random/RandomGenerator.h pcmax/instance/generator/random/RandomGenerator.cpp
-        pcmax/instance/Instance.h pcmax/instance/Instance.cpp)
+        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
+        pcmax/instance/generator/GeneratorWrapper.h pcmax/instance/generator/GeneratorWrapper.cpp
+        pcmax/instance/generator/random/RandomGenerator.h pcmax/instance/generator/random/RandomGenerator.cpp)
 
 add_executable(OptimalGenerator
         pcmax/instance/generator/optimal/main.cpp
         pcmax/instance/generator/Generator.h pcmax/instance/generator/Generator.cpp
-        pcmax/instance/generator/optimal/OptimalGenerator.h pcmax/instance/generator/optimal/OptimalGenerator.cpp
-        pcmax/instance/Instance.h pcmax/instance/Instance.cpp)
+        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
+        pcmax/instance/generator/GeneratorWrapper.h pcmax/instance/generator/GeneratorWrapper.cpp
+        pcmax/instance/generator/optimal/OptimalGenerator.h pcmax/instance/generator/optimal/OptimalGenerator.cpp)
