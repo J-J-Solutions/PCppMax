@@ -20,40 +20,33 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_INSTANCE_GENERATOR_H
-#define PCMAX_INSTANCE_GENERATOR_H
+#ifndef PCMAX_BRUTE_FORCE_ALGORITHM_H
+#define PCMAX_BRUTE_FORCE_ALGORITHM_H
 
-#include <random>
-#include <ostream>
+#include <algorithm>
+#include "../base/Algorithm.h"
+#include "../TaskManager.h"
+#include "../greedy/GreedyAlgorithm.h"
 
-typedef std::random_device DEVICE;
-typedef std::mt19937 MT;
-typedef std::uniform_int_distribution<int> DISTRIBUTION;
+#define LONG_LONG_MAX 9223372036854775807
 
-class InstanceGenerator {
-protected:
-    DEVICE device;
-    MT mt;
-    DISTRIBUTION machineDistribution;
-    DISTRIBUTION taskDistribution;
-    DISTRIBUTION taskWorkTimeDistribution;
-
-    int machines = -1, tasks = -1, *taskWorkTime = nullptr;
-
-    virtual std::string instanceName(int n) = 0;
-
-    static bool exists(const std::string &instance);
+class BruteForceAlgorithm : public Algorithm {
 public:
+    [[nodiscard]] long long int solve(const Instance &instance) const override {
+        int tasks = instance.getTasks();
+        int *taskWorkTime = instance.getTaskWorkTime();
 
-    InstanceGenerator();
+        std::sort(taskWorkTime, taskWorkTime + tasks);
 
-    virtual void generateNewInstance() = 0;
+        long long pcMax = LONG_LONG_MAX;
+        GreedyAlgorithm algorithm;
 
-    void writeToFile(const std::string& path);
+        do {
+            pcMax = std::min(pcMax, algorithm.solve(instance));
+        } while (std::next_permutation(taskWorkTime, taskWorkTime + tasks));
 
-    void generateInstances(int n);
-
-    friend std::ostream &operator<<(std::ostream &os, const InstanceGenerator &generator);
+        return pcMax;
+    }
 };
 
-#endif //PCMAX_INSTANCEGENERATOR_H
+#endif //PCMAX_BRUTEFORCEALGORITHM_H

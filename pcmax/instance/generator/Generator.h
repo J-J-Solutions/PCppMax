@@ -20,25 +20,40 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
-#define PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
+#ifndef PCMAX_INSTANCE_GENERATOR_H
+#define PCMAX_INSTANCE_GENERATOR_H
 
-#include <ostream>
-#include "../InstanceGenerator.h"
+#include <random>
+#include "../Instance.h"
 
-class OptimalInstanceGenerator: public InstanceGenerator {
-    DISTRIBUTION solutionDistribution;
-    DISTRIBUTION optimalTaskDistribution;
-    int solution = -1;
+typedef std::random_device DEVICE;
+typedef std::mt19937 MT;
+typedef std::uniform_int_distribution<int> DISTRIBUTION;
+
+class Generator {
 protected:
-    std::string instanceName(int n) override;
+    DEVICE device;
+    MT mt;
+    DISTRIBUTION machineDistribution;
+    DISTRIBUTION taskDistribution;
+    DISTRIBUTION taskWorkTimeDistribution;
+
+    Instance *instance = nullptr;
+
+    virtual std::string instanceName(int n) = 0;
+
+    static bool exists(const std::string &instance);
+
+    void writeInstanceToFile(const std::string &path);
+
+    virtual void generate();
 
 public:
-    OptimalInstanceGenerator();
+    Generator();
 
-    void generateNewInstance() override;
+    void generate(int instances);
 
-    friend std::ostream &operator<<(std::ostream &os, const OptimalInstanceGenerator &generator);
+    virtual ~Generator();
 };
 
-#endif //PCMAX_OPTIMALINSTANCEGENERATOR_H
+#endif //PCMAX_INSTANCEGENERATOR_H

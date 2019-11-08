@@ -23,9 +23,11 @@
 #ifndef PCMAX_ALGORITHM_H
 #define PCMAX_ALGORITHM_H
 
+#include "../../instance/Instance.h"
+
 class Algorithm {
 public:
-    static long long solve(int machines, int tasks, int *taskWorkTime);
+    [[nodiscard]] virtual long long int solve(const Instance &instance) const = 0;
 };
 
 #endif //PCMAX_ALGORITHM_H

@@ -20,36 +20,10 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <ostream>
-#include "OptimalInstanceGenerator.h"
+#include "../GeneratorWrapper.h"
+#include "OptimalGenerator.h"
 
-OptimalInstanceGenerator::OptimalInstanceGenerator() :
-        InstanceGenerator(),
-        solutionDistribution(DISTRIBUTION(100, 1000)),
-        optimalTaskDistribution(DISTRIBUTION(1)) {}
-
-void OptimalInstanceGenerator::generateNewInstance() {
-    delete[] taskWorkTime;
-    machines = machineDistribution(mt);
-    solution = solutionDistribution(mt);
-    std::vector<int> tasksVector;
-    for (int i = 0; i < machines; ++i) {
-        for (int t = solution, task; t > 0; t -= task) {
-            task = optimalTaskDistribution(mt) % t + 1;
-            tasksVector.push_back(task);
-        }
-    }
-    tasks = tasksVector.size();
-    taskWorkTime = new int[tasks];
-    std::copy(tasksVector.begin(), tasksVector.end(), taskWorkTime);
-}
-
-std::ostream &operator<<(std::ostream &os, const OptimalInstanceGenerator &generator) {
-    os << static_cast<const InstanceGenerator &>(generator);
-    os << generator.solution << std::endl;
-    return os;
-}
-
-std::string OptimalInstanceGenerator::instanceName(int n) {
-    return "optimal_instance_" + std::to_string(n) + ".txt";
+int main() {
+    OptimalGenerator generator;
+    GeneratorWrapper::generateWithFeedback(&generator);
 }

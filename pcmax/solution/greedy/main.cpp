@@ -20,30 +20,10 @@
 //
 //----------------------------------------------------------------------------
 
-#include "../base/Algorithm.h"
-#include "../TaskManager.h"
-#include <algorithm>
+#include "../base/AlgorithmWrapper.h"
+#include "GreedyAlgorithm.h"
 
-#define LLONG_LONG_MAX 9223372036854775807
-
-using namespace std;
-
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    sort(taskWorkTime, taskWorkTime + tasks);
-
-    long long pcMax = LLONG_LONG_MAX;
-
-    do {
-        TaskManager taskManager(machines);
-
-        for (int t = 0; t < tasks; ++t) {
-            auto machine = taskManager.pollShortestWorkingMachine();
-            machine.addTask(taskWorkTime[t]);
-            taskManager.addMachine(machine);
-        }
-
-        pcMax = min(pcMax, taskManager.peekLongestWorkingMachine().getTotalWorkTime());
-    } while (next_permutation(taskWorkTime, taskWorkTime + tasks));
-
-    return pcMax;
+int main() {
+    AlgorithmWrapper::solveWithFeedback(GreedyAlgorithm());
+    return 0;
 }

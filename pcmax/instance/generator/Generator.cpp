@@ -20,16 +20,52 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "RandomInstanceGenerator.h"
+#include <ostream>
+#include <fstream>
+#include <iostream>
+#include "Generator.h"
 
-void RandomInstanceGenerator::generateNewInstance() {
-    delete[] taskWorkTime;
-    machines = machineDistribution(mt);
-    tasks = taskDistribution(mt);
-    taskWorkTime = new int[tasks];
-    for (int t = 0; t < tasks; ++t) taskWorkTime[t] = taskWorkTimeDistribution(mt);
+Generator::Generator() :
+        mt(device()),
+        machineDistribution(DISTRIBUTION(1, 100)),
+        taskDistribution(DISTRIBUTION(10, 100)),
+        taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
+
+void Generator::writeInstanceToFile(const std::string &path) {
+    std::cerr << path << std::endl;
+
+    std::ofstream output(path);
+
+    if (!output.is_open()) {
+        std::cerr << "Cannot open file '" << path << "'" << std::endl;
+        return;
+    }
+
+    output << *instance;
+
+    output.close();
 }
 
-std::string RandomInstanceGenerator::instanceName(int n) {
-    return "random_instance_" + std::to_string(n) + ".txt";
+void Generator::generate(int instances) {
+    int counter = 0;
+    while (exists(instanceName(counter))) ++counter;
+
+    while (instances--) {
+        generate();
+        writeInstanceToFile(instanceName(counter++));
+    }
 }
+
+bool Generator::exists(const std::string &instance) {
+    return std::ifstream(instance).good();
+}
+
+Generator::~Generator() {
+    delete instance;
+}
+
+void Generator::generate() {
+    delete instance;
+    instance = new Instance;
+}
+

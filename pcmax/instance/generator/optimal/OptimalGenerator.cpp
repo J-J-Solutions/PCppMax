@@ -20,12 +20,40 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <iostream>
-#include "OptimalInstanceGenerator.h"
+#include <ostream>
+#include "OptimalGenerator.h"
 
-int main() {
-    std::cout << "How many instances would you like created?" << std::endl;
-    int instances;
-    std::cin >> instances;
-    OptimalInstanceGenerator().generateInstances(instances);
+OptimalGenerator::OptimalGenerator() :
+        Generator(),
+        solutionDistribution(DISTRIBUTION(100, 1000)) {}
+
+void OptimalGenerator::generate() {
+    Generator::generate();
+
+    int machines = machineDistribution(mt);
+    int solution = solutionDistribution(mt);
+
+    std::vector<int> tasksVector;
+    // reserve excessive amount of memory to prevent reallocation
+    tasksVector.reserve(machines * solution);
+
+    for (int m = 0; m < machines; ++m) {
+        for (int capacity = solution, task; capacity > 0; capacity -= task) {
+            task = taskWorkTimeDistribution(mt) % capacity + 1;
+            tasksVector.push_back(task);
+        }
+    }
+
+    int tasks = tasksVector.size();
+    int *taskWorkTime = new int[tasks];
+    std::copy(tasksVector.begin(), tasksVector.end(), taskWorkTime);
+
+    instance->setMachines(machines);
+    instance->setTasks(tasks);
+    instance->setTaskWorkTime(taskWorkTime);
+    instance->setSolution(solution);
+}
+
+std::string OptimalGenerator::instanceName(int n) {
+    return "optimal_instance_" + std::to_string(n) + ".txt";
 }

@@ -20,50 +20,23 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <ostream>
-#include <fstream>
-#include <iostream>
-#include "InstanceGenerator.h"
+#ifndef PCMAX_LONGEST_TIME_PROCESSING_ALGORITHM_H
+#define PCMAX_LONGEST_TIME_PROCESSING_ALGORITHM_H
 
-InstanceGenerator::InstanceGenerator() :
-        mt(device()),
-        machineDistribution(DISTRIBUTION(1, 100)),
-        taskDistribution(DISTRIBUTION(10, 100)),
-        taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
+#include <algorithm>
+#include "../base/Algorithm.h"
+#include "../greedy/GreedyAlgorithm.h"
 
-void InstanceGenerator::writeToFile(const std::string &path) {
-    std::cerr << path << std::endl;
-
-    std::ofstream output(path);
-
-    if (!output.is_open()) {
-        std::cerr << "Cannot open file '" << path << "'" << std::endl;
-        return;
+class LongestTimeProcessingAlgorithm : public Algorithm {
+public:
+    [[nodiscard]] long long int solve(const Instance &instance) const override {
+        int tasks = instance.getTasks();
+        int *taskWorkTime = instance.getTaskWorkTime();
+        std::sort(taskWorkTime, taskWorkTime + tasks, std::greater<>());
+        return GreedyAlgorithm().solve(instance);
     }
+};
 
-    output << *this;
+typedef LongestTimeProcessingAlgorithm LTPAlgorithm;
 
-    output.close();
-}
-
-std::ostream &operator<<(std::ostream &os, const InstanceGenerator &generator) {
-    os << generator.machines << std::endl;
-    os << generator.tasks << std::endl;
-    for (int t = 0; t < generator.tasks; ++t) os << generator.taskWorkTime[t] << std::endl;
-    return os;
-}
-
-void InstanceGenerator::generateInstances(int n) {
-    int counter = 0;
-    while (exists(instanceName(counter))) ++counter;
-
-    while (n--) {
-        generateNewInstance();
-        writeToFile(instanceName(counter++));
-    }
-}
-
-bool InstanceGenerator::exists(const std::string &instance) {
-    std::ifstream stream(instance);
-    return stream.good();
-}
+#endif //PCMAX_LONGESTTIMEPROCESSINGALGORITHM_H

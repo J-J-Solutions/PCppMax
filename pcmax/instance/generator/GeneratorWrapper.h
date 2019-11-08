@@ -20,16 +20,14 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_RANDOM_INSTANCE_GENERATOR_H
-#define PCMAX_RANDOM_INSTANCE_GENERATOR_H
+#ifndef PCMAX_GENERATOR_WRAPPER_H
+#define PCMAX_GENERATOR_WRAPPER_H
 
-#include "../InstanceGenerator.h"
+#include "Generator.h"
 
-class RandomInstanceGenerator: public InstanceGenerator {
-    std::string instanceName(int n) override;
+class GeneratorWrapper {
 public:
-
-    void generateNewInstance() override;
+    static void generateWithFeedback(Generator *generator);
 };
 
-#endif //PCMAX_RANDOMINSTANCEGENERATOR_H
+#endif //PCMAX_GENERATORWRAPPER_H
