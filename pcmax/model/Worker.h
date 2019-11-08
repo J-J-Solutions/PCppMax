@@ -20,30 +20,23 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_INSTANCE_H
-#define PCMAX_INSTANCE_H
+#ifndef PCMAX_WORKER_H
+#define PCMAX_WORKER_H
 
-#include <istream>
+#include <set>
+#include "Task.h"
 
-class Instance {
-    int machines, tasks, *taskDurations, solution;
+class Worker {
+    int totalWorkTime = 0;
+
+    std::set<Task> tasks;
 
 public:
-    explicit Instance(int machines = -1, int tasks = -1, int *taskDurations = nullptr, int solution = -1);
+    [[nodiscard]] int getTotalWorkTime() const;
 
-    [[nodiscard]] int getMachines() const;
+    void addTask(const Task &task);
 
-    [[nodiscard]] int getTasks() const;
-
-    [[nodiscard]] int *getTaskDurations() const;
-
-    [[nodiscard]] int getSolution() const;
-
-    friend std::istream &operator>>(std::istream &input, Instance &instance);
-
-    friend std::ostream &operator<<(std::ostream &output, Instance &instance);
-
-    virtual ~Instance();
+    Task pollShortestTask();
 };
 
-#endif //PCMAX_INSTANCE_H
+#endif //PCMAX_WORKER_H

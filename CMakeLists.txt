@@ -7,41 +7,46 @@ add_executable(Greedy
         pcmax/solution/greedy/main.cpp
         pcmax/solution/base/Algorithm.h pcmax/solution/greedy/GreedyAlgorithm.h
         pcmax/solution/base/AlgorithmWrapper.h pcmax/solution/base/AlgorithmWrapper.cpp
-        pcmax/solution/Machine.h pcmax/solution/Machine.cpp
-        pcmax/solution/TaskManager.h pcmax/solution/TaskManager.cpp
-        pcmax/instance/Instance.h pcmax/instance/Instance.cpp)
+        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
+        pcmax/model/Task.cpp pcmax/model/Task.h
+        pcmax/model/Worker.cpp pcmax/model/Worker.h
+        pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)
 
 add_executable(Heuristic
         pcmax/solution/heuristic/main.cpp
         pcmax/solution/base/Algorithm.h pcmax/solution/heuristic/HeuristicAlgorithm.h
         pcmax/solution/base/AlgorithmWrapper.h pcmax/solution/base/AlgorithmWrapper.cpp
-        pcmax/solution/Machine.h pcmax/solution/Machine.cpp
-        pcmax/solution/TaskManager.h pcmax/solution/TaskManager.cpp
-        pcmax/instance/Instance.h pcmax/instance/Instance.cpp)
+        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
+        pcmax/model/Task.cpp pcmax/model/Task.h
+        pcmax/model/Worker.cpp pcmax/model/Worker.h
+        pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)
 
 add_executable(BruteForce
         pcmax/solution/brute-force/main.cpp
         pcmax/solution/base/Algorithm.h pcmax/solution/brute-force/BruteForceAlgorithm.h
         pcmax/solution/base/AlgorithmWrapper.h pcmax/solution/base/AlgorithmWrapper.cpp
-        pcmax/solution/Machine.h pcmax/solution/Machine.cpp
-        pcmax/solution/TaskManager.h pcmax/solution/TaskManager.cpp
-        pcmax/instance/Instance.h pcmax/instance/Instance.cpp)
+        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
+        pcmax/model/Task.cpp pcmax/model/Task.h
+        pcmax/model/Worker.cpp pcmax/model/Worker.h
+        pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)
 
 add_executable(Genetic
         pcmax/solution/genetic/main.cpp
         pcmax/solution/base/Algorithm.h pcmax/solution/genetic/GeneticAlgorithm.h
         pcmax/solution/base/AlgorithmWrapper.h pcmax/solution/base/AlgorithmWrapper.cpp
-        pcmax/solution/Machine.h pcmax/solution/Machine.cpp
-        pcmax/solution/TaskManager.h pcmax/solution/TaskManager.cpp
-        pcmax/instance/Instance.h pcmax/instance/Instance.cpp)
+        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
+        pcmax/model/Task.cpp pcmax/model/Task.h
+        pcmax/model/Worker.cpp pcmax/model/Worker.h
+        pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)
 
 add_executable(LTP
         pcmax/solution/ltp/main.cpp
         pcmax/solution/base/Algorithm.h pcmax/solution/ltp/LongestTimeProcessingAlgorithm.h
         pcmax/solution/base/AlgorithmWrapper.h pcmax/solution/base/AlgorithmWrapper.cpp
-        pcmax/solution/Machine.h pcmax/solution/Machine.cpp
-        pcmax/solution/TaskManager.h pcmax/solution/TaskManager.cpp
-        pcmax/instance/Instance.h pcmax/instance/Instance.cpp)
+        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
+        pcmax/model/Task.cpp pcmax/model/Task.h
+        pcmax/model/Worker.cpp pcmax/model/Worker.h
+        pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)
 
 add_executable(RandomGenerator
         pcmax/instance/generator/random/main.cpp

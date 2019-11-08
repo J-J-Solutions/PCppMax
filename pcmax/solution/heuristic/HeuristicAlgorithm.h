@@ -25,55 +25,64 @@
 
 #include <algorithm>
 #include "../base/Algorithm.h"
-#include "../TaskManager.h"
+#include "../../model/Scheduler.h"
 
 class HeuristicAlgorithm : public Algorithm {
-public:
-    [[nodiscard]] long long int solve(const Instance &instance) const override {
-        int machines = instance.getMachines();
-        int tasks = instance.getTasks();
-        int *taskWorkTime = instance.getTaskWorkTime();
-
-        long long totalWorkTime = 0;
-
-        for (int t = 0; t < tasks; ++t) totalWorkTime += taskWorkTime[t];
-
-        long long averageWorkTime = totalWorkTime / machines;
-
-        std::sort(taskWorkTime, taskWorkTime + tasks);
-
-        TaskManager taskManager(machines);
-
-        int lower = 0, upper = tasks - 1;
-        for (int m = 0; m < machines && lower <= upper; ++m) {
-            auto machine = taskManager.pollShortestWorkingMachine();
-            while (machine.getTotalWorkTime() < averageWorkTime) {
-                machine.addTask(taskWorkTime[upper--]);
-                if (machine.getTotalWorkTime() < averageWorkTime && lower <= upper)
-                    machine.addTask(taskWorkTime[lower++]);
-                else break;
-            }
-            taskManager.addMachine(machine);
-        }
-
-        while (lower < upper) {
-            auto machine = taskManager.pollShortestWorkingMachine();
-            machine.addTask(taskWorkTime[upper--]);
-            taskManager.addMachine(machine);
-        }
-
-        long long possiblyLowerMax = taskManager.peekLongestWorkingMachine().getTotalWorkTime(), pcMax;
+protected:
+    [[nodiscard]] static int balance(Scheduler scheduler) {
+        auto possiblyLowerMax = scheduler.peekLastAvailableWorker().getTotalWorkTime();
+        int pcMax;
         do {
             pcMax = possiblyLowerMax;
-            auto shortestWorkingMachine = taskManager.pollShortestWorkingMachine();
-            auto longestWorkingMachine = taskManager.pollLongestWorkingMachine();
+            auto longestWorkingMachine = scheduler.pollLastAvailableWorker();
+            auto shortestWorkingMachine = scheduler.pollFirstAvailableWorker();
             shortestWorkingMachine.addTask(longestWorkingMachine.pollShortestTask());
-            taskManager.addMachine(shortestWorkingMachine);
-            taskManager.addMachine(longestWorkingMachine);
-            possiblyLowerMax = taskManager.peekLongestWorkingMachine().getTotalWorkTime();
+            scheduler.addWorker(shortestWorkingMachine);
+            scheduler.addWorker(longestWorkingMachine);
+            possiblyLowerMax = scheduler.peekLastAvailableWorker().getTotalWorkTime();
         } while (possiblyLowerMax < pcMax);
 
         return pcMax;
+    }
+
+public:
+    [[nodiscard]] int solve(const Instance &instance) const override {
+        auto machines = instance.getMachines();
+        auto tasks = instance.getTasks();
+        auto taskDurations = instance.getTaskDurations();
+
+        long long int totalWorkTime = 0;
+
+        for (int t = 0; t < tasks; ++t) totalWorkTime += taskDurations[t];
+
+        long long int averageWorkTime = totalWorkTime / machines;
+
+        std::sort(taskDurations, taskDurations + tasks);
+
+        Scheduler scheduler(machines);
+
+        int lower = 0, upper = tasks - 1;
+        for (int m = 0; m < machines && lower <= upper; ++m) {
+            auto machine = scheduler.pollFirstAvailableWorker();
+            while (machine.getTotalWorkTime() < averageWorkTime) {
+                machine.addTask(Task(upper, taskDurations[upper]));
+                --upper;
+                if (machine.getTotalWorkTime() < averageWorkTime && lower <= upper) {
+                    machine.addTask(Task(lower, taskDurations[lower]));
+                    ++lower;
+                } else break;
+            }
+            scheduler.addWorker(machine);
+        }
+
+        while (lower < upper) {
+            auto machine = scheduler.pollFirstAvailableWorker();
+            machine.addTask(Task(upper, taskDurations[upper]));
+            --upper;
+            scheduler.addWorker(machine);
+        }
+
+        return balance(scheduler);
     }
 };
 

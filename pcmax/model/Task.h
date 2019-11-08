@@ -20,30 +20,30 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_INSTANCE_H
-#define PCMAX_INSTANCE_H
+#ifndef PCMAX_TASK_H
+#define PCMAX_TASK_H
 
-#include <istream>
-
-class Instance {
-    int machines, tasks, *taskDurations, solution;
-
+class Task {
+    int ID;
+    int duration;
 public:
-    explicit Instance(int machines = -1, int tasks = -1, int *taskDurations = nullptr, int solution = -1);
+    Task(int ID, int duration);
 
-    [[nodiscard]] int getMachines() const;
+    [[nodiscard]] int getID() const;
 
-    [[nodiscard]] int getTasks() const;
+    [[nodiscard]] int getDuration() const;
 
-    [[nodiscard]] int *getTaskDurations() const;
+    bool operator==(const Task &task) const;
 
-    [[nodiscard]] int getSolution() const;
+    bool operator!=(const Task &task) const;
 
-    friend std::istream &operator>>(std::istream &input, Instance &instance);
+    bool operator<(const Task &task) const;
 
-    friend std::ostream &operator<<(std::ostream &output, Instance &instance);
+    bool operator>(const Task &task) const;
 
-    virtual ~Instance();
+    bool operator<=(const Task &task) const;
+
+    bool operator>=(const Task &task) const;
 };
 
-#endif //PCMAX_INSTANCE_H
+#endif //PCMAX_TASK_H

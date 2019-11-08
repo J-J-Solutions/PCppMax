@@ -28,7 +28,7 @@ OptimalGenerator::OptimalGenerator() :
         solutionDistribution(DISTRIBUTION(100, 1000)) {}
 
 void OptimalGenerator::generate() {
-    Generator::generate();
+    delete Generator::instance;
 
     int machines = machineDistribution(mt);
     int solution = solutionDistribution(mt);
@@ -39,19 +39,16 @@ void OptimalGenerator::generate() {
 
     for (int m = 0; m < machines; ++m) {
         for (int capacity = solution, task; capacity > 0; capacity -= task) {
-            task = taskWorkTimeDistribution(mt) % capacity + 1;
+            task = taskDurationDistribution(mt) % capacity + 1;
             tasksVector.push_back(task);
         }
     }
 
     int tasks = tasksVector.size();
-    int *taskWorkTime = new int[tasks];
-    std::copy(tasksVector.begin(), tasksVector.end(), taskWorkTime);
+    int *taskDurations = new int[tasks];
+    std::copy(tasksVector.begin(), tasksVector.end(), taskDurations);
 
-    instance->setMachines(machines);
-    instance->setTasks(tasks);
-    instance->setTaskWorkTime(taskWorkTime);
-    instance->setSolution(solution);
+    Generator::instance = new Instance(machines, tasks, taskDurations, solution);
 }
 
 std::string OptimalGenerator::instanceName(int n) {

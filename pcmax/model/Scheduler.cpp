@@ -20,30 +20,48 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_INSTANCE_H
-#define PCMAX_INSTANCE_H
+#include "Scheduler.h"
 
-#include <istream>
+Scheduler::Scheduler(int workers) {
+    WORKERS init;
+    while (workers--) init.push_back(Worker());
+    this->workers[0] = init;
+}
 
-class Instance {
-    int machines, tasks, *taskDurations, solution;
+void Scheduler::addWorker(const Worker &worker) {
+    workers[worker.getTotalWorkTime()].push_back(worker);
+}
 
-public:
-    explicit Instance(int machines = -1, int tasks = -1, int *taskDurations = nullptr, int solution = -1);
+Worker Scheduler::pollWorker(ITERATOR iterator) {
+    auto machine = iterator->second.front();
+    iterator->second.pop_front();
+    if (iterator->second.empty()) workers.erase(iterator);
+    return machine;
+}
 
-    [[nodiscard]] int getMachines() const;
+Worker Scheduler::peekLastAvailableWorker() const {
+    return workers.rbegin()->second.front();
+}
 
-    [[nodiscard]] int getTasks() const;
+Worker Scheduler::pollFirstAvailableWorker() {
+    return pollWorker(workers.begin());
+}
 
-    [[nodiscard]] int *getTaskDurations() const;
+Worker Scheduler::pollLastAvailableWorker() {
+    return pollWorker(--workers.end());
+}
 
-    [[nodiscard]] int getSolution() const;
+Worker *Scheduler::toWorkersArray(int size) const {
+    auto machineArray = new Worker[size];
+    int m = 0;
+    for (const auto &pair : this->workers)
+        for (const auto &machine : pair.second)
+            machineArray[m++] = machine;
+    return machineArray;
+}
 
-    friend std::istream &operator>>(std::istream &input, Instance &instance);
-
-    friend std::ostream &operator<<(std::ostream &output, Instance &instance);
-
-    virtual ~Instance();
-};
-
-#endif //PCMAX_INSTANCE_H
+Scheduler Scheduler::fromWorkersArray(Worker *workers, int size) {
+    Scheduler scheduler(0);
+    for (int m = 0; m < size; ++m) scheduler.addWorker(workers[m]);
+    return scheduler;
+}

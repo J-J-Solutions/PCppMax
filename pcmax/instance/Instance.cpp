@@ -22,18 +22,18 @@
 
 #include "Instance.h"
 
-Instance::Instance(int machines, int tasks, int *taskWorkTime, int solution) :
+Instance::Instance(int machines, int tasks, int *taskDurations, int solution) :
         machines(machines),
         tasks(tasks),
-        taskWorkTime(taskWorkTime),
+        taskDurations(taskDurations),
         solution(solution) {}
 
 std::istream &operator>>(std::istream &input, Instance &instance) {
-    delete[] instance.taskWorkTime;
+    delete[] instance.taskDurations;
     input >> instance.machines;
     input >> instance.tasks;
-    instance.taskWorkTime = new int[instance.tasks];
-    for (int t = 0; t < instance.tasks; ++t) input >> instance.taskWorkTime[t];
+    instance.taskDurations = new int[instance.tasks];
+    for (int t = 0; t < instance.tasks; ++t) input >> instance.taskDurations[t];
     input >> instance.solution;
 
     return input;
@@ -42,7 +42,7 @@ std::istream &operator>>(std::istream &input, Instance &instance) {
 std::ostream &operator<<(std::ostream &output, Instance &instance) {
     output << instance.machines << std::endl;
     output << instance.tasks << std::endl;
-    for (int t = 0; t < instance.tasks; ++t) output << instance.taskWorkTime[t] << std::endl;
+    for (int t = 0; t < instance.tasks; ++t) output << instance.taskDurations[t] << std::endl;
     output << instance.solution << std::endl;
 
     return output;
@@ -50,18 +50,10 @@ std::ostream &operator<<(std::ostream &output, Instance &instance) {
 
 int Instance::getMachines() const { return machines; }
 
-void Instance::setMachines(int newMachines) { Instance::machines = newMachines; }
-
 int Instance::getTasks() const { return tasks; }
 
-void Instance::setTasks(int newTasks) { Instance::tasks = newTasks; }
-
-int *Instance::getTaskWorkTime() const { return taskWorkTime; }
-
-void Instance::setTaskWorkTime(int *newTaskWorkTime) { Instance::taskWorkTime = newTaskWorkTime; }
+int *Instance::getTaskDurations() const { return taskDurations; }
 
 int Instance::getSolution() const { return solution; }
 
-void Instance::setSolution(int newSolution) { Instance::solution = newSolution; }
-
-Instance::~Instance() { delete[] taskWorkTime; }
+Instance::~Instance() { delete[] taskDurations; }

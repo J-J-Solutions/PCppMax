@@ -20,30 +20,37 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_INSTANCE_H
-#define PCMAX_INSTANCE_H
+#ifndef PCMAX_SCHEDULER_H
+#define PCMAX_SCHEDULER_H
 
-#include <istream>
+#include <list>
+#include <map>
+#include "Worker.h"
 
-class Instance {
-    int machines, tasks, *taskDurations, solution;
+typedef std::list<Worker, std::allocator<Worker>> WORKERS;
+typedef std::pair<const int, WORKERS> ENTRY;
+typedef std::_Rb_tree_iterator<ENTRY> ITERATOR;
+
+class Scheduler {
+
+    std::map<int, WORKERS> workers;
+
+    Worker pollWorker(ITERATOR iterator);
 
 public:
-    explicit Instance(int machines = -1, int tasks = -1, int *taskDurations = nullptr, int solution = -1);
+    explicit Scheduler(int workers);
 
-    [[nodiscard]] int getMachines() const;
+    static Scheduler fromWorkersArray(Worker *workers, int size);
 
-    [[nodiscard]] int getTasks() const;
+    void addWorker(const Worker &worker);
 
-    [[nodiscard]] int *getTaskDurations() const;
+    Worker pollFirstAvailableWorker();
 
-    [[nodiscard]] int getSolution() const;
+    [[nodiscard]] Worker peekLastAvailableWorker() const;
 
-    friend std::istream &operator>>(std::istream &input, Instance &instance);
+    Worker pollLastAvailableWorker();
 
-    friend std::ostream &operator<<(std::ostream &output, Instance &instance);
-
-    virtual ~Instance();
+    [[nodiscard]] Worker *toWorkersArray(int size) const;
 };
 
-#endif //PCMAX_INSTANCE_H
+#endif //PCMAX_SCHEDULER_H
