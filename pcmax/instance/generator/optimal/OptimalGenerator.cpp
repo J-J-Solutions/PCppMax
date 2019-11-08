@@ -34,10 +34,12 @@ void OptimalGenerator::generateNewInstance() {
     int solution = solutionDistribution(mt);
 
     std::vector<int> tasksVector;
+    // reserve excessive amount of memory to prevent reallocation
+    tasksVector.reserve(machines * solution);
 
-    for (int i = 0; i < machines; ++i) {
-        for (int t = solution, task; t > 0; t -= task) {
-            task = taskWorkTimeDistribution(mt) % t + 1;
+    for (int m = 0; m < machines; ++m) {
+        for (int capacity = solution, task; capacity > 0; capacity -= task) {
+            task = taskWorkTimeDistribution(mt) % capacity + 1;
             tasksVector.push_back(task);
         }
     }
@@ -49,6 +51,7 @@ void OptimalGenerator::generateNewInstance() {
     instance->setMachines(machines);
     instance->setTasks(tasks);
     instance->setTaskWorkTime(taskWorkTime);
+    instance->setSolution(solution);
 }
 
 std::string OptimalGenerator::instanceName(int n) {

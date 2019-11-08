@@ -20,3 +20,10 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
+#include "../base/AlgorithmWrapper.h"
+#include "BruteForceAlgorithm.h"
+
+int main() {
+    AlgorithmWrapper::solveWithFeedback(BruteForceAlgorithm());
+    return 0;
+}

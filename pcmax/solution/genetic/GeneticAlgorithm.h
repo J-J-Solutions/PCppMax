@@ -20,7 +20,16 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_GENETICALGORITHM_H
-#define PCMAX_GENETICALGORITHM_H
+#ifndef PCMAX_GENETIC_ALGORITHM_H
+#define PCMAX_GENETIC_ALGORITHM_H
+
+#include "../base/Algorithm.h"
+
+class GeneticAlgorithm: public Algorithm {
+public:
+    [[nodiscard]] long long int solve(const Instance &instance) const override {
+        return -1;
+    }
+};
 
 #endif //PCMAX_GENETICALGORITHM_H

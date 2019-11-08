@@ -20,13 +20,23 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
+#ifndef PCMAX_LONGEST_TIME_PROCESSING_ALGORITHM_H
+#define PCMAX_LONGEST_TIME_PROCESSING_ALGORITHM_H
+
+#include <algorithm>
 #include "../base/Algorithm.h"
+#include "../greedy/GreedyAlgorithm.h"
 
-long long solveGreedy(int machines, int tasks, int *taskWorkTime) {
-    return -1;
-}
+class LongestTimeProcessingAlgorithm : public Algorithm {
+public:
+    [[nodiscard]] long long int solve(const Instance &instance) const override {
+        int tasks = instance.getTasks();
+        int *taskWorkTime = instance.getTaskWorkTime();
+        std::sort(taskWorkTime, taskWorkTime + tasks, std::greater<>());
+        return GreedyAlgorithm().solve(instance);
+    }
+};
 
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    //TODO implement genetic algorithm
-    return -1;
-}
+typedef LongestTimeProcessingAlgorithm LTPAlgorithm;
+
+#endif //PCMAX_LONGESTTIMEPROCESSINGALGORITHM_H

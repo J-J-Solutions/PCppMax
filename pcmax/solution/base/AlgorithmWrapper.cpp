@@ -21,12 +21,62 @@
 //----------------------------------------------------------------------------
 
 #include <sstream>
+#include <iostream>
+#include <chrono>
 #include "AlgorithmWrapper.h"
 
-std::string
-AlgorithmWrapper::getTimeElapsed(long time1, const std::string &unit1, long time2, const std::string &unit2) {
-    std::stringstream s;
-    s << time1 << unit1;
-    if (time2) s << time2 << unit2;
-    return s.str();
+std::string AlgorithmWrapper::getTimeElapsed(
+        long time1, const std::string &unit1,
+        long time2, const std::string &unit2) {
+    std::stringstream stream;
+    stream << time1 << unit1;
+    if (time2) stream << time2 << unit2;
+    return stream.str();
+}
+
+void AlgorithmWrapper::solveWithFeedback(const Algorithm &algorithm, const Instance &instance) {
+    auto begin = std::chrono::system_clock::now();
+    auto solution = algorithm.solve(instance);
+    auto end = std::chrono::system_clock::now();
+
+    std::string timeElapsed;
+    auto diff = end - begin;
+    auto hours = std::chrono::duration_cast<std::chrono::hours>(diff).count();
+    auto minutes = std::chrono::duration_cast<std::chrono::minutes>(diff).count();
+    if (hours) {
+        minutes %= 60;
+        timeElapsed = getTimeElapsed(hours, "h", minutes, "min");
+    } else {
+        auto seconds = std::chrono::duration_cast<std::chrono::seconds>(diff).count();
+        if (minutes) {
+            seconds %= 60;
+            timeElapsed = getTimeElapsed(minutes, "min", seconds, "s");
+        } else {
+            auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
+            if (seconds) {
+                milliseconds %= 1000;
+                timeElapsed = getTimeElapsed(seconds, "s", milliseconds, "ms");
+            } else {
+                auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(diff).count();
+                if (milliseconds) {
+                    microseconds %= 1000;
+                    timeElapsed = getTimeElapsed(milliseconds, "ms", microseconds, "μs");
+                } else {
+                    auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count();
+                    if (microseconds) {
+                        nanoseconds %= 1000;
+                        timeElapsed = timeElapsed = getTimeElapsed(microseconds, "μs", nanoseconds, "ns");
+                    } else timeElapsed = getTimeElapsed(nanoseconds, "ns");
+                }
+            }
+        }
+    }
+
+    std::cout << "Solution [" << solution << "] found in " << timeElapsed << std::endl;
+}
+
+void AlgorithmWrapper::solveWithFeedback(const Algorithm &algorithm) {
+    Instance instance;
+    std::cin >> instance;
+    solveWithFeedback(algorithm, instance);
 }

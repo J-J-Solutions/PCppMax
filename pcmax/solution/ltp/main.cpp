@@ -20,48 +20,10 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "Instance.h"
+#include "../base/AlgorithmWrapper.h"
+#include "LongestTimeProcessingAlgorithm.h"
 
-Instance::Instance(int machines, int tasks, int *taskWorkTime, int solution) :
-        machines(machines),
-        tasks(tasks),
-        taskWorkTime(taskWorkTime),
-        solution(solution) {}
-
-std::istream &operator>>(std::istream &input, Instance &instance) {
-    delete[] instance.taskWorkTime;
-    input >> instance.machines;
-    input >> instance.tasks;
-    instance.taskWorkTime = new int[instance.tasks];
-    for (int t = 0; t < instance.tasks; ++t) input >> instance.taskWorkTime[t];
-    input >> instance.solution;
-
-    return input;
+int main() {
+    AlgorithmWrapper::solveWithFeedback(LTPAlgorithm());
+    return 0;
 }
-
-std::ostream &operator<<(std::ostream &output, Instance &instance) {
-    output << instance.machines << std::endl;
-    output << instance.tasks << std::endl;
-    for (int t = 0; t < instance.tasks; ++t) output << instance.taskWorkTime[t] << std::endl;
-    output << instance.solution << std::endl;
-
-    return output;
-}
-
-int Instance::getMachines() const { return machines; }
-
-void Instance::setMachines(int newMachines) { Instance::machines = newMachines; }
-
-int Instance::getTasks() const { return tasks; }
-
-void Instance::setTasks(int newTasks) { Instance::tasks = newTasks; }
-
-int *Instance::getTaskWorkTime() const { return taskWorkTime; }
-
-void Instance::setTaskWorkTime(int *newTaskWorkTime) { Instance::taskWorkTime = newTaskWorkTime; }
-
-int Instance::getSolution() const { return solution; }
-
-void Instance::setSolution(int newSolution) { Instance::solution = newSolution; }
-
-Instance::~Instance() { delete[] taskWorkTime; }

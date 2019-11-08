@@ -20,17 +20,21 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_ALGORITH_MWRAPPER_H
-#define PCMAX_ALGORITH_MWRAPPER_H
+#ifndef PCMAX_ALGORITHM_WRAPPER_H
+#define PCMAX_ALGORITHM_WRAPPER_H
 
 #include <string>
+#include "Algorithm.h"
 
 class AlgorithmWrapper {
-
-    std::string getTimeElapsed(long time1, const std::string &unit1, long time2 = 0, const std::string &unit2 = "");
+    static std::string getTimeElapsed(
+            long time1, const std::string &unit1,
+            long time2 = 0, const std::string &unit2 = "");
 
 public:
+    static void solveWithFeedback(const Algorithm &algorithm, const Instance &instance);
 
+    static void solveWithFeedback(const Algorithm &algorithm);
 };
 
 #endif //PCMAX_ALGORITHMWRAPPER_H

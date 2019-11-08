@@ -27,5 +27,5 @@ int main() {
     std::cout << "How many instances would you like created?" << std::endl;
     int instances;
     std::cin >> instances;
-    OptimalGenerator().generateInstances(instances);
+    OptimalGenerator().generate(instances);
 }

@@ -46,19 +46,18 @@ void Generator::writeInstanceToFile(const std::string &path) {
     output.close();
 }
 
-void Generator::generateInstances(int n) {
+void Generator::generate(int instances) {
     int counter = 0;
     while (exists(instanceName(counter))) ++counter;
 
-    while (n--) {
+    while (instances--) {
         generateNewInstance();
         writeInstanceToFile(instanceName(counter++));
     }
 }
 
 bool Generator::exists(const std::string &instance) {
-    std::ifstream stream(instance);
-    return stream.good();
+    return std::ifstream(instance).good();
 }
 
 Generator::~Generator() {
@@ -70,4 +69,3 @@ void Generator::generateNewInstance() {
     instance = new Instance;
 }
 
-Instance *Generator::getInstance() const { return instance; }

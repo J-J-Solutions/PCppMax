@@ -26,9 +26,9 @@
 #include <istream>
 
 class Instance {
-    int machines, tasks, *taskWorkTime;
+    int machines, tasks, *taskWorkTime, solution;
 public:
-    explicit Instance(int machines = -1, int tasks = -1, int *taskWorkTime = nullptr);
+    explicit Instance(int machines = -1, int tasks = -1, int *taskWorkTime = nullptr, int solution = -1);
 
     [[nodiscard]] int getMachines() const;
 
@@ -41,6 +41,10 @@ public:
     [[nodiscard]] int *getTaskWorkTime() const;
 
     void setTaskWorkTime(int *newTaskWorkTime);
+
+    [[nodiscard]] int getSolution() const;
+
+    void setSolution(int newSolution);
 
     friend std::istream &operator>>(std::istream &input, Instance &instance);
 

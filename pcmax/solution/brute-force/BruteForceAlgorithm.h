@@ -20,32 +20,29 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_BRUTEFORCEALGORITHM_H
-#define PCMAX_BRUTEFORCEALGORITHM_H
+#ifndef PCMAX_BRUTE_FORCE_ALGORITHM_H
+#define PCMAX_BRUTE_FORCE_ALGORITHM_H
 
 #include <algorithm>
 #include "../base/Algorithm.h"
 #include "../TaskManager.h"
+#include "../greedy/GreedyAlgorithm.h"
 
 #define LONG_LONG_MAX 9223372036854775807
 
 class BruteForceAlgorithm : public Algorithm {
 public:
-    long long int solve(int machines, int tasks, int *taskWorkTime) override {
+    [[nodiscard]] long long int solve(const Instance &instance) const override {
+        int tasks = instance.getTasks();
+        int *taskWorkTime = instance.getTaskWorkTime();
+
         std::sort(taskWorkTime, taskWorkTime + tasks);
 
         long long pcMax = LONG_LONG_MAX;
+        GreedyAlgorithm algorithm;
 
         do {
-            TaskManager taskManager(machines);
-
-            for (int t = 0; t < tasks; ++t) {
-                auto machine = taskManager.pollShortestWorkingMachine();
-                machine.addTask(taskWorkTime[t]);
-                taskManager.addMachine(machine);
-            }
-
-            pcMax = std::min(pcMax, taskManager.peekLongestWorkingMachine().getTotalWorkTime());
+            pcMax = std::min(pcMax, algorithm.solve(instance));
         } while (std::next_permutation(taskWorkTime, taskWorkTime + tasks));
 
         return pcMax;

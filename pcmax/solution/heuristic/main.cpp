@@ -20,3 +20,10 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
+#include "HeuristicAlgorithm.h"
+#include "../base/AlgorithmWrapper.h"
+
+int main() {
+    AlgorithmWrapper::solveWithFeedback(HeuristicAlgorithm());
+    return 0;
+}

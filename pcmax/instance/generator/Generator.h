@@ -51,9 +51,7 @@ protected:
 public:
     Generator();
 
-    void generateInstances(int n);
-
-    [[nodiscard]] Instance *getInstance() const;
+    void generate(int instances);
 
     virtual ~Generator();
 };

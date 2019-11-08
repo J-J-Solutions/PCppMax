@@ -20,7 +20,29 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_GREEDYALGORITHM_H
-#define PCMAX_GREEDYALGORITHM_H
+#ifndef PCMAX_GREEDY_ALGORITHM_H
+#define PCMAX_GREEDY_ALGORITHM_H
+
+#include "../base/Algorithm.h"
+#include "../TaskManager.h"
+
+class GreedyAlgorithm : public Algorithm {
+public:
+    [[nodiscard]] long long int solve(const Instance &instance) const override {
+        int machines = instance.getMachines();
+        int tasks = instance.getTasks();
+        int *taskWorkTime = instance.getTaskWorkTime();
+
+        TaskManager taskManager(machines);
+
+        for (int t = 0; t < tasks; ++t) {
+            auto machine = taskManager.pollShortestWorkingMachine();
+            machine.addTask(taskWorkTime[t]);
+            taskManager.addMachine(machine);
+        }
+
+        return taskManager.peekLongestWorkingMachine().getTotalWorkTime();
+    }
+};
 
 #endif //PCMAX_GREEDYALGORITHM_H
