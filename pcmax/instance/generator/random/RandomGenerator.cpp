@@ -20,12 +20,21 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <iostream>
-#include "OptimalInstanceGenerator.h"
+#include "RandomGenerator.h"
 
-int main() {
-    std::cout << "How many instances would you like created?" << std::endl;
-    int instances;
-    std::cin >> instances;
-    OptimalInstanceGenerator().generateInstances(instances);
+void RandomGenerator::generateNewInstance() {
+    Generator::generateNewInstance();
+
+    int machines = machineDistribution(mt);
+    int tasks = taskDistribution(mt);
+    int *taskWorkTime = new int[tasks];
+    for (int t = 0; t < tasks; ++t) taskWorkTime[t] = taskWorkTimeDistribution(mt);
+
+    instance->setMachines(machines);
+    instance->setTasks(tasks);
+    instance->setTaskWorkTime(taskWorkTime);
+}
+
+std::string RandomGenerator::instanceName(int n) {
+    return "random_instance_" + std::to_string(n) + ".txt";
 }

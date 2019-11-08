@@ -20,50 +20,17 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <ostream>
-#include <fstream>
-#include <iostream>
-#include "InstanceGenerator.h"
+#ifndef PCMAX_ALGORITH_MWRAPPER_H
+#define PCMAX_ALGORITH_MWRAPPER_H
 
-InstanceGenerator::InstanceGenerator() :
-        mt(device()),
-        machineDistribution(DISTRIBUTION(1, 100)),
-        taskDistribution(DISTRIBUTION(10, 100)),
-        taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
+#include <string>
 
-void InstanceGenerator::writeToFile(const std::string &path) {
-    std::cerr << path << std::endl;
+class AlgorithmWrapper {
 
-    std::ofstream output(path);
+    std::string getTimeElapsed(long time1, const std::string &unit1, long time2 = 0, const std::string &unit2 = "");
 
-    if (!output.is_open()) {
-        std::cerr << "Cannot open file '" << path << "'" << std::endl;
-        return;
-    }
+public:
 
-    output << *this;
+};
 
-    output.close();
-}
-
-std::ostream &operator<<(std::ostream &os, const InstanceGenerator &generator) {
-    os << generator.machines << std::endl;
-    os << generator.tasks << std::endl;
-    for (int t = 0; t < generator.tasks; ++t) os << generator.taskWorkTime[t] << std::endl;
-    return os;
-}
-
-void InstanceGenerator::generateInstances(int n) {
-    int counter = 0;
-    while (exists(instanceName(counter))) ++counter;
-
-    while (n--) {
-        generateNewInstance();
-        writeToFile(instanceName(counter++));
-    }
-}
-
-bool InstanceGenerator::exists(const std::string &instance) {
-    std::ifstream stream(instance);
-    return stream.good();
-}
+#endif //PCMAX_ALGORITHMWRAPPER_H

@@ -20,16 +20,21 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_RANDOM_INSTANCE_GENERATOR_H
-#define PCMAX_RANDOM_INSTANCE_GENERATOR_H
+#ifndef PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
+#define PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
 
-#include "../InstanceGenerator.h"
+#include "../Generator.h"
 
-class RandomInstanceGenerator: public InstanceGenerator {
+class OptimalGenerator: public Generator {
+    DISTRIBUTION solutionDistribution;
+
+protected:
     std::string instanceName(int n) override;
+
 public:
+    OptimalGenerator();
 
     void generateNewInstance() override;
 };
 
-#endif //PCMAX_RANDOMINSTANCEGENERATOR_H
+#endif //PCMAX_OPTIMALINSTANCEGENERATOR_H

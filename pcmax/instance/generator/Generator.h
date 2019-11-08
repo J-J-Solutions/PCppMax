@@ -20,16 +20,42 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "RandomInstanceGenerator.h"
+#ifndef PCMAX_INSTANCE_GENERATOR_H
+#define PCMAX_INSTANCE_GENERATOR_H
 
-void RandomInstanceGenerator::generateNewInstance() {
-    delete[] taskWorkTime;
-    machines = machineDistribution(mt);
-    tasks = taskDistribution(mt);
-    taskWorkTime = new int[tasks];
-    for (int t = 0; t < tasks; ++t) taskWorkTime[t] = taskWorkTimeDistribution(mt);
-}
+#include <random>
+#include "../Instance.h"
 
-std::string RandomInstanceGenerator::instanceName(int n) {
-    return "random_instance_" + std::to_string(n) + ".txt";
-}
+typedef std::random_device DEVICE;
+typedef std::mt19937 MT;
+typedef std::uniform_int_distribution<int> DISTRIBUTION;
+
+class Generator {
+protected:
+    DEVICE device;
+    MT mt;
+    DISTRIBUTION machineDistribution;
+    DISTRIBUTION taskDistribution;
+    DISTRIBUTION taskWorkTimeDistribution;
+
+    Instance *instance = nullptr;
+
+    virtual std::string instanceName(int n) = 0;
+
+    static bool exists(const std::string &instance);
+
+    void writeInstanceToFile(const std::string &path);
+
+    virtual void generateNewInstance();
+
+public:
+    Generator();
+
+    void generateInstances(int n);
+
+    [[nodiscard]] Instance *getInstance() const;
+
+    virtual ~Generator();
+};
+
+#endif //PCMAX_INSTANCEGENERATOR_H

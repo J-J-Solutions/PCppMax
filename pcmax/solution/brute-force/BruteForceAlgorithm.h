@@ -20,13 +20,36 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
+#ifndef PCMAX_BRUTEFORCEALGORITHM_H
+#define PCMAX_BRUTEFORCEALGORITHM_H
+
+#include <algorithm>
 #include "../base/Algorithm.h"
+#include "../TaskManager.h"
 
-long long solveGreedy(int machines, int tasks, int *taskWorkTime) {
-    return -1;
-}
+#define LONG_LONG_MAX 9223372036854775807
 
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    //TODO implement genetic algorithm
-    return -1;
-}
+class BruteForceAlgorithm : public Algorithm {
+public:
+    long long int solve(int machines, int tasks, int *taskWorkTime) override {
+        std::sort(taskWorkTime, taskWorkTime + tasks);
+
+        long long pcMax = LONG_LONG_MAX;
+
+        do {
+            TaskManager taskManager(machines);
+
+            for (int t = 0; t < tasks; ++t) {
+                auto machine = taskManager.pollShortestWorkingMachine();
+                machine.addTask(taskWorkTime[t]);
+                taskManager.addMachine(machine);
+            }
+
+            pcMax = std::min(pcMax, taskManager.peekLongestWorkingMachine().getTotalWorkTime());
+        } while (std::next_permutation(taskWorkTime, taskWorkTime + tasks));
+
+        return pcMax;
+    }
+};
+
+#endif //PCMAX_BRUTEFORCEALGORITHM_H

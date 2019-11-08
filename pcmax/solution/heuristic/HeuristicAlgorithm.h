@@ -20,24 +20,7 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
-#define PCMAX_OPTIMAL_INSTANCE_GENERATOR_H
+#ifndef PCMAX_HEURISTICALGORITHM_H
+#define PCMAX_HEURISTICALGORITHM_H
 
-#include <ostream>
-#include "../InstanceGenerator.h"
-
-class OptimalInstanceGenerator: public InstanceGenerator {
-    DISTRIBUTION solutionDistribution;
-    int solution = -1;
-protected:
-    std::string instanceName(int n) override;
-
-public:
-    OptimalInstanceGenerator();
-
-    void generateNewInstance() override;
-
-    friend std::ostream &operator<<(std::ostream &os, const OptimalInstanceGenerator &generator);
-};
-
-#endif //PCMAX_OPTIMALINSTANCEGENERATOR_H
+#endif //PCMAX_HEURISTICALGORITHM_H

@@ -20,13 +20,12 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "../base/Algorithm.h"
+#include <iostream>
+#include "OptimalGenerator.h"
 
-long long solveGreedy(int machines, int tasks, int *taskWorkTime) {
-    return -1;
-}
-
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    //TODO implement genetic algorithm
-    return -1;
+int main() {
+    std::cout << "How many instances would you like created?" << std::endl;
+    int instances;
+    std::cin >> instances;
+    OptimalGenerator().generateInstances(instances);
 }

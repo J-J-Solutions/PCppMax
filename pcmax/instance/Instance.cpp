@@ -20,12 +20,41 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <iostream>
-#include "RandomInstanceGenerator.h"
+#include "Instance.h"
 
-int main() {
-    std::cout << "How many instances would you like created?" << std::endl;
-    int instances;
-    std::cin >> instances;
-    RandomInstanceGenerator().generateInstances(instances);
+Instance::Instance(int machines, int tasks, int *taskWorkTime) :
+        machines(machines),
+        tasks(tasks),
+        taskWorkTime(taskWorkTime) {}
+
+std::istream &operator>>(std::istream &input, Instance &instance) {
+    delete[] instance.taskWorkTime;
+    input >> instance.machines;
+    input >> instance.tasks;
+    instance.taskWorkTime = new int[instance.tasks];
+    for (int t = 0; t < instance.tasks; ++t) {
+        input >> instance.taskWorkTime[t];
+    }
+    return input;
 }
+
+std::ostream &operator<<(std::ostream &output, Instance &instance) {
+    output << instance.machines << std::endl;
+    output << instance.tasks << std::endl;
+    for (int t = 0; t < instance.tasks; ++t) output << instance.taskWorkTime[t] << std::endl;
+    return output;
+}
+
+Instance::~Instance() { delete[] taskWorkTime; }
+
+int Instance::getMachines() const { return machines; }
+
+void Instance::setMachines(int newMachines) { Instance::machines = newMachines; }
+
+int Instance::getTasks() const { return tasks; }
+
+void Instance::setTasks(int newTasks) { Instance::tasks = newTasks; }
+
+int *Instance::getTaskWorkTime() const { return taskWorkTime; }
+
+void Instance::setTaskWorkTime(int *newTaskWorkTime) { Instance::taskWorkTime = newTaskWorkTime; }

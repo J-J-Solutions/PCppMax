@@ -20,13 +20,37 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "../base/Algorithm.h"
+#include <ostream>
+#include "OptimalGenerator.h"
 
-long long solveGreedy(int machines, int tasks, int *taskWorkTime) {
-    return -1;
+OptimalGenerator::OptimalGenerator() :
+        Generator(),
+        solutionDistribution(DISTRIBUTION(100, 1000)) {}
+
+void OptimalGenerator::generateNewInstance() {
+    Generator::generateNewInstance();
+
+    int machines = machineDistribution(mt);
+    int solution = solutionDistribution(mt);
+
+    std::vector<int> tasksVector;
+
+    for (int i = 0; i < machines; ++i) {
+        for (int t = solution, task; t > 0; t -= task) {
+            task = taskWorkTimeDistribution(mt) % t + 1;
+            tasksVector.push_back(task);
+        }
+    }
+
+    int tasks = tasksVector.size();
+    int *taskWorkTime = new int[tasks];
+    std::copy(tasksVector.begin(), tasksVector.end(), taskWorkTime);
+
+    instance->setMachines(machines);
+    instance->setTasks(tasks);
+    instance->setTaskWorkTime(taskWorkTime);
 }
 
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    //TODO implement genetic algorithm
-    return -1;
+std::string OptimalGenerator::instanceName(int n) {
+    return "optimal_instance_" + std::to_string(n) + ".txt";
 }

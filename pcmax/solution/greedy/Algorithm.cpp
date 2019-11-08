@@ -36,3 +36,7 @@ long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
 
     return taskManager.peekLongestWorkingMachine().getTotalWorkTime();
 }
+
+void Algorithm::solveWithFeedback(int machines, int tasks, int *taskWorktime) {
+
+}

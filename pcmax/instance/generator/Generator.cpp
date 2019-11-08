@@ -20,13 +20,54 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "../base/Algorithm.h"
+#include <ostream>
+#include <fstream>
+#include <iostream>
+#include "Generator.h"
 
-long long solveGreedy(int machines, int tasks, int *taskWorkTime) {
-    return -1;
+Generator::Generator() :
+        mt(device()),
+        machineDistribution(DISTRIBUTION(1, 100)),
+        taskDistribution(DISTRIBUTION(10, 100)),
+        taskWorkTimeDistribution(DISTRIBUTION(20, 100)) {}
+
+void Generator::writeInstanceToFile(const std::string &path) {
+    std::cerr << path << std::endl;
+
+    std::ofstream output(path);
+
+    if (!output.is_open()) {
+        std::cerr << "Cannot open file '" << path << "'" << std::endl;
+        return;
+    }
+
+    output << *instance;
+
+    output.close();
 }
 
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    //TODO implement genetic algorithm
-    return -1;
+void Generator::generateInstances(int n) {
+    int counter = 0;
+    while (exists(instanceName(counter))) ++counter;
+
+    while (n--) {
+        generateNewInstance();
+        writeInstanceToFile(instanceName(counter++));
+    }
 }
+
+bool Generator::exists(const std::string &instance) {
+    std::ifstream stream(instance);
+    return stream.good();
+}
+
+Generator::~Generator() {
+    delete instance;
+}
+
+void Generator::generateNewInstance() {
+    delete instance;
+    instance = new Instance;
+}
+
+Instance *Generator::getInstance() const { return instance; }

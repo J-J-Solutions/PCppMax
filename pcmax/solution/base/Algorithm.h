@@ -23,9 +23,12 @@
 #ifndef PCMAX_ALGORITHM_H
 #define PCMAX_ALGORITHM_H
 
+#include <chrono>
+#include <istream>
+
 class Algorithm {
 public:
-    static long long solve(int machines, int tasks, int *taskWorkTime);
+    virtual long long solve(int machines, int tasks, int *taskWorkTime) = 0;
 };
 
 #endif //PCMAX_ALGORITHM_H

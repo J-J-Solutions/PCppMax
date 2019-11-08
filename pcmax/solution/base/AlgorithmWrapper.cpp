@@ -20,13 +20,13 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "../base/Algorithm.h"
+#include <sstream>
+#include "AlgorithmWrapper.h"
 
-long long solveGreedy(int machines, int tasks, int *taskWorkTime) {
-    return -1;
-}
-
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    //TODO implement genetic algorithm
-    return -1;
+std::string
+AlgorithmWrapper::getTimeElapsed(long time1, const std::string &unit1, long time2, const std::string &unit2) {
+    std::stringstream s;
+    s << time1 << unit1;
+    if (time2) s << time2 << unit2;
+    return s.str();
 }

@@ -20,40 +20,12 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_INSTANCE_GENERATOR_H
-#define PCMAX_INSTANCE_GENERATOR_H
+#include <iostream>
+#include "RandomGenerator.h"
 
-#include <random>
-#include <ostream>
-
-typedef std::random_device DEVICE;
-typedef std::mt19937 MT;
-typedef std::uniform_int_distribution<int> DISTRIBUTION;
-
-class InstanceGenerator {
-protected:
-    DEVICE device;
-    MT mt;
-    DISTRIBUTION machineDistribution;
-    DISTRIBUTION taskDistribution;
-    DISTRIBUTION taskWorkTimeDistribution;
-
-    int machines = -1, tasks = -1, *taskWorkTime = nullptr;
-
-    virtual std::string instanceName(int n) = 0;
-
-    static bool exists(const std::string &instance);
-public:
-
-    InstanceGenerator();
-
-    virtual void generateNewInstance() = 0;
-
-    void writeToFile(const std::string& path);
-
-    void generateInstances(int n);
-
-    friend std::ostream &operator<<(std::ostream &os, const InstanceGenerator &generator);
-};
-
-#endif //PCMAX_INSTANCEGENERATOR_H
+int main() {
+    std::cout << "How many instances would you like created?" << std::endl;
+    int instances;
+    std::cin >> instances;
+    RandomGenerator().generateInstances(instances);
+}

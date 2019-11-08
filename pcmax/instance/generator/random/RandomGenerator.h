@@ -20,13 +20,17 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "../base/Algorithm.h"
+#ifndef PCMAX_RANDOM_INSTANCE_GENERATOR_H
+#define PCMAX_RANDOM_INSTANCE_GENERATOR_H
 
-long long solveGreedy(int machines, int tasks, int *taskWorkTime) {
-    return -1;
-}
+#include "../Generator.h"
 
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    //TODO implement genetic algorithm
-    return -1;
-}
+class RandomGenerator : public Generator {
+    std::string instanceName(int n) override;
+
+public:
+
+    void generateNewInstance() override;
+};
+
+#endif //PCMAX_RANDOMINSTANCEGENERATOR_H

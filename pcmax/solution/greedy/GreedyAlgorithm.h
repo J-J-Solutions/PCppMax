@@ -20,13 +20,7 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "../base/Algorithm.h"
+#ifndef PCMAX_GREEDYALGORITHM_H
+#define PCMAX_GREEDYALGORITHM_H
 
-long long solveGreedy(int machines, int tasks, int *taskWorkTime) {
-    return -1;
-}
-
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    //TODO implement genetic algorithm
-    return -1;
-}
+#endif //PCMAX_GREEDYALGORITHM_H

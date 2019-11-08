@@ -20,35 +20,33 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include <ostream>
-#include "OptimalInstanceGenerator.h"
+#ifndef PCMAX_INSTANCE_H
+#define PCMAX_INSTANCE_H
 
-OptimalInstanceGenerator::OptimalInstanceGenerator() :
-        InstanceGenerator(),
-        solutionDistribution(DISTRIBUTION(100, 1000)) {}
+#include <istream>
 
-void OptimalInstanceGenerator::generateNewInstance() {
-    delete[] taskWorkTime;
-    machines = machineDistribution(mt);
-    solution = solutionDistribution(mt);
-    int solutionTimes = solution * machines;
-    std::vector<int> tasksVector;
-    int task;
-    for (int t = solutionTimes; t > 0; t -= task) {
-        task = taskWorkTimeDistribution(mt);
-        tasksVector.push_back(task);
-    }
-    tasks = tasksVector.size();
-    taskWorkTime = new int[tasks];
-    std::copy(tasksVector.begin(), tasksVector.end(), taskWorkTime);
-}
+class Instance {
+    int machines, tasks, *taskWorkTime;
+public:
+    explicit Instance(int machines = -1, int tasks = -1, int *taskWorkTime = nullptr);
 
-std::ostream &operator<<(std::ostream &os, const OptimalInstanceGenerator &generator) {
-    os << static_cast<const InstanceGenerator &>(generator);
-    os << generator.solution << std::endl;
-    return os;
-}
+    [[nodiscard]] int getMachines() const;
 
-std::string OptimalInstanceGenerator::instanceName(int n) {
-    return "optimal_instance_" + std::to_string(n) + ".txt";
-}
+    void setMachines(int newMachines);
+
+    [[nodiscard]] int getTasks() const;
+
+    void setTasks(int newTasks);
+
+    [[nodiscard]] int *getTaskWorkTime() const;
+
+    void setTaskWorkTime(int *newTaskWorkTime);
+
+    friend std::istream &operator>>(std::istream &input, Instance &instance);
+
+    friend std::ostream &operator<<(std::ostream &output, Instance &instance);
+
+    virtual ~Instance();
+};
+
+#endif //PCMAX_INSTANCE_H

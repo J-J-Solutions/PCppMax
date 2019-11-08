@@ -20,13 +20,3 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "../base/Algorithm.h"
-
-long long solveGreedy(int machines, int tasks, int *taskWorkTime) {
-    return -1;
-}
-
-long long Algorithm::solve(int machines, int tasks, int *taskWorkTime) {
-    //TODO implement genetic algorithm
-    return -1;
-}
