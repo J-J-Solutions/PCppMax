@@ -23,7 +23,7 @@
 #ifndef PCMAX_GREEDY_ALGORITHM_H
 #define PCMAX_GREEDY_ALGORITHM_H
 
-#include "../base/Algorithm.h"
+#include "../Algorithm.h"
 #include "../../model/Scheduler.h"
 
 class GreedyAlgorithm : public Algorithm {

@@ -20,7 +20,7 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "../base/AlgorithmWrapper.h"
+#include "../AlgorithmWrapper.h"
 #include "BruteForceAlgorithm.h"
 
 int main() {

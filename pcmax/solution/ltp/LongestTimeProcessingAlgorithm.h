@@ -24,7 +24,7 @@
 #define PCMAX_LONGEST_TIME_PROCESSING_ALGORITHM_H
 
 #include <algorithm>
-#include "../base/Algorithm.h"
+#include "../Algorithm.h"
 #include "../greedy/GreedyAlgorithm.h"
 
 class LongestTimeProcessingAlgorithm : public Algorithm {

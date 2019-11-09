@@ -26,7 +26,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
-#include "../base/Algorithm.h"
+#include "../Algorithm.h"
 
 typedef std::random_device DEVICE;
 typedef std::mt19937 MT;
@@ -69,8 +69,9 @@ void GeneticAlgorithm<T, U>::breedNewPopulation() {
     population.reserve(populationSize + populationSize * populationSize);
 
     for (int t1 = 0; t1 < populationSize; ++t1) {
-        for (int t2 = 0; t2 < t1; ++t2) breedNewMember(t1, t2);
-        for (int t2 = t1 + 1; t2 < populationSize; ++t2) breedNewMember(t1, t2);
+        int t2 = 0;
+        while (t2 < t1) breedNewMember(t1, t2++);
+        while (++t2 < populationSize) breedNewMember(t1, t2);
     }
 
     if (population.size() > maxPopulationSize) {
