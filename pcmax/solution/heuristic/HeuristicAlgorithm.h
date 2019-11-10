@@ -24,7 +24,7 @@
 #define PCMAX_HEURISTIC_ALGORITHM_H
 
 #include <algorithm>
-#include "../base/Algorithm.h"
+#include "../Algorithm.h"
 #include "../../model/Scheduler.h"
 
 class HeuristicAlgorithm : public Algorithm {

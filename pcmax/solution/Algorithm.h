@@ -23,7 +23,7 @@
 #ifndef PCMAX_ALGORITHM_H
 #define PCMAX_ALGORITHM_H
 
-#include "../../instance/Instance.h"
+#include "../instance/Instance.h"
 
 class Algorithm {
 public:

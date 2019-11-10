@@ -24,7 +24,7 @@
 #define PCMAX_BRUTE_FORCE_ALGORITHM_H
 
 #include <algorithm>
-#include "../base/Algorithm.h"
+#include "../Algorithm.h"
 #include "../greedy/GreedyAlgorithm.h"
 
 #define LONG_LONG_MAX 2147483647
