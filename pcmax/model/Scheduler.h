@@ -25,9 +25,10 @@
 
 #include <list>
 #include <map>
+#include <vector>
 #include "Worker.h"
 
-typedef std::list<Worker, std::allocator<Worker>> WORKERS;
+typedef std::list<Worker *> WORKERS;
 typedef std::pair<const int, WORKERS> ENTRY;
 typedef std::_Rb_tree_iterator<ENTRY> ITERATOR;
 
@@ -35,22 +36,28 @@ class Scheduler {
 
     std::map<int, WORKERS> workers;
 
-    Worker pollWorker(ITERATOR iterator);
+    Worker *pollWorker(ITERATOR iterator);
 
 public:
-    explicit Scheduler(int workers);
+    explicit Scheduler(int workers = 0);
 
-    static Scheduler fromWorkersArray(Worker *workers, int size);
+    static Scheduler *fromWorkers(const WORKERS &workers);
 
-    void addWorker(const Worker &worker);
+    void addWorker(Worker *worker);
 
-    Worker pollFirstAvailableWorker();
+    Worker *pollFirstAvailableWorker();
 
-    [[nodiscard]] Worker peekLastAvailableWorker() const;
+    [[nodiscard]] Worker *peekLastAvailableWorker() const;
 
-    Worker pollLastAvailableWorker();
+    Worker *pollLastAvailableWorker();
 
-    [[nodiscard]] Worker *toWorkersArray(int size) const;
+    [[nodiscard]] WORKERS asWorkers() const;
+
+    bool operator<(const Scheduler &rhs) const;
+
+    bool operator>(const Scheduler &rhs) const;
+
+    virtual ~Scheduler();
 };
 
 #endif //PCMAX_SCHEDULER_H

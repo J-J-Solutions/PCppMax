@@ -32,18 +32,6 @@ public:
     [[nodiscard]] int getID() const;
 
     [[nodiscard]] int getDuration() const;
-
-    bool operator==(const Task &task) const;
-
-    bool operator!=(const Task &task) const;
-
-    bool operator<(const Task &task) const;
-
-    bool operator>(const Task &task) const;
-
-    bool operator<=(const Task &task) const;
-
-    bool operator>=(const Task &task) const;
 };
 
 #endif //PCMAX_TASK_H

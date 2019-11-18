@@ -24,6 +24,6 @@
 #include "GreedyAlgorithm.h"
 
 int main() {
-    AlgorithmWrapper::solveWithFeedback(GreedyAlgorithm());
+    AlgorithmWrapper::solveWithFeedback(new GreedyAlgorithm);
     return 0;
 }

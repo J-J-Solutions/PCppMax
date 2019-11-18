@@ -24,19 +24,27 @@
 #define PCMAX_WORKER_H
 
 #include <set>
+#include <list>
+#include <map>
 #include "Task.h"
+
+typedef std::list<Task *> TASKS;
 
 class Worker {
     int totalWorkTime = 0;
 
-    std::set<Task> tasks;
+    std::map<int, TASKS> tasks;
 
 public:
     [[nodiscard]] int getTotalWorkTime() const;
 
-    void addTask(const Task &task);
+    TASKS asTasks();
 
-    Task pollShortestTask();
+    void addTask(Task *task);
+
+    Task *pollShortestTask();
+
+    virtual ~Worker();
 };
 
 #endif //PCMAX_WORKER_H

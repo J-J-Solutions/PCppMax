@@ -28,8 +28,8 @@
 
 class GreedyAlgorithm : public Algorithm {
 public:
-    [[nodiscard]] int solve(const Instance &instance) const override {
-        int machines = instance.getMachines();
+    [[nodiscard]] int solve(const Instance &instance) override {
+        int machines = instance.getWorkers();
         int tasks = instance.getTasks();
         int *taskDurations = instance.getTaskDurations();
 
@@ -37,11 +37,11 @@ public:
 
         for (int t = 0; t < tasks; ++t) {
             auto worker = scheduler.pollFirstAvailableWorker();
-            worker.addTask(Task(t, taskDurations[t]));
+            worker->addTask(new Task(t, taskDurations[t]));
             scheduler.addWorker(worker);
         }
 
-        return scheduler.peekLastAvailableWorker().getTotalWorkTime();
+        return scheduler.peekLastAvailableWorker()->getTotalWorkTime();
     }
 };
 

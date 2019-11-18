@@ -24,6 +24,6 @@
 #include "../AlgorithmWrapper.h"
 
 int main() {
-    AlgorithmWrapper::solveWithFeedback(HeuristicAlgorithm());
+    AlgorithmWrapper::solveWithFeedback(new HeuristicAlgorithm);
     return 0;
 }

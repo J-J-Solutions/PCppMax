@@ -30,18 +30,19 @@
 #define LONG_LONG_MAX 2147483647
 
 class BruteForceAlgorithm : public Algorithm {
+    GreedyAlgorithm greedyAlgorithm;
+
 public:
-    [[nodiscard]] int solve(const Instance &instance) const override {
+    [[nodiscard]] int solve(const Instance &instance) override {
         int tasks = instance.getTasks();
         int *taskDurations = instance.getTaskDurations();
 
         std::sort(taskDurations, taskDurations + tasks);
 
         int pcMax = LONG_LONG_MAX;
-        GreedyAlgorithm algorithm;
 
         do {
-            pcMax = std::min(pcMax, algorithm.solve(instance));
+            pcMax = std::min(pcMax, greedyAlgorithm.solve(instance));
         } while (std::next_permutation(taskDurations, taskDurations + tasks));
 
         return pcMax;

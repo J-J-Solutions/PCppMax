@@ -27,7 +27,7 @@
 
 class Algorithm {
 public:
-    [[nodiscard]] virtual int solve(const Instance &instance) const = 0;
+    [[nodiscard]] virtual int solve(const Instance &instance) = 0;
 };
 
 #endif //PCMAX_ALGORITHM_H

@@ -20,30 +20,34 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#ifndef PCMAX_INSTANCE_H
-#define PCMAX_INSTANCE_H
+#ifndef PCMAX_FIRST_GENETIC_ALGORITHM_H
+#define PCMAX_FIRST_GENETIC_ALGORITHM_H
 
-#include <istream>
+#include "../../GeneticAlgorithm.h"
+#include "../../../../model/Scheduler.h"
 
-class Instance {
-    int workers, tasks, *taskDurations, solution;
+typedef std::function<bool(Task *)> TASK_PREDICATE;
+
+class FirstGeneticAlgorithm : public GeneticAlgorithm<Scheduler> {
+    TASK_PREDICATE even = [](Task *task) { return task->getID() % 2 == 0; };
+    TASK_PREDICATE odd = [](Task *task) { return task->getID() % 2 == 1; };
+
+    static Worker *copyTasks(
+            const TASKS &tasks,
+            const TASK_PREDICATE &predicate = [](Task *task) { return true; },
+            Worker *worker = new Worker);
+
+protected:
+    Scheduler *breed(Scheduler *scheduler1, Scheduler *scheduler2) const override;
+
+    Scheduler *mutate(Scheduler *scheduler) const override;
+
+    [[nodiscard]] Scheduler *initialMember(const Instance &instance) const override;
+
+    int score(Scheduler *scheduler) const override;
 
 public:
-    explicit Instance(int workers = -1, int tasks = -1, int *taskDurations = nullptr, int solution = -1);
-
-    [[nodiscard]] int getWorkers() const;
-
-    [[nodiscard]] int getTasks() const;
-
-    [[nodiscard]] int *getTaskDurations() const;
-
-    [[nodiscard]] int getSolution() const;
-
-    friend std::istream &operator>>(std::istream &input, Instance &instance);
-
-    friend std::ostream &operator<<(std::ostream &output, Instance &instance);
-
-    virtual ~Instance();
+    FirstGeneticAlgorithm();
 };
 
-#endif //PCMAX_INSTANCE_H
+#endif //PCMAX_FIRST_GENETIC_ALGORITHM_H

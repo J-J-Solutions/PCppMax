@@ -22,15 +22,15 @@
 
 #include "Instance.h"
 
-Instance::Instance(int machines, int tasks, int *taskDurations, int solution) :
-        machines(machines),
+Instance::Instance(int workers, int tasks, int *taskDurations, int solution) :
+        workers(workers),
         tasks(tasks),
         taskDurations(taskDurations),
         solution(solution) {}
 
 std::istream &operator>>(std::istream &input, Instance &instance) {
     delete[] instance.taskDurations;
-    input >> instance.machines;
+    input >> instance.workers;
     input >> instance.tasks;
     instance.taskDurations = new int[instance.tasks];
     for (int t = 0; t < instance.tasks; ++t) input >> instance.taskDurations[t];
@@ -40,7 +40,7 @@ std::istream &operator>>(std::istream &input, Instance &instance) {
 }
 
 std::ostream &operator<<(std::ostream &output, Instance &instance) {
-    output << instance.machines << std::endl;
+    output << instance.workers << std::endl;
     output << instance.tasks << std::endl;
     for (int t = 0; t < instance.tasks; ++t) output << instance.taskDurations[t] << std::endl;
     output << instance.solution << std::endl;
@@ -48,7 +48,7 @@ std::ostream &operator<<(std::ostream &output, Instance &instance) {
     return output;
 }
 
-int Instance::getMachines() const { return machines; }
+int Instance::getWorkers() const { return workers; }
 
 int Instance::getTasks() const { return tasks; }
 

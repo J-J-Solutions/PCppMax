@@ -24,6 +24,6 @@
 #include "LongestTimeProcessingAlgorithm.h"
 
 int main() {
-    AlgorithmWrapper::solveWithFeedback(LTPAlgorithm());
+    AlgorithmWrapper::solveWithFeedback(new LTPAlgorithm);
     return 0;
 }

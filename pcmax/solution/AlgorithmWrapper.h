@@ -32,9 +32,9 @@ class AlgorithmWrapper {
             long time2 = 0, const std::string &unit2 = "");
 
 public:
-    static void solveWithFeedback(const Algorithm &algorithm, const Instance &instance);
+    static void solveWithFeedback(Algorithm *algorithm, const Instance &instance);
 
-    static void solveWithFeedback(const Algorithm &algorithm);
+    static void solveWithFeedback(Algorithm *algorithm);
 };
 
 #endif //PCMAX_ALGORITHMWRAPPER_H
