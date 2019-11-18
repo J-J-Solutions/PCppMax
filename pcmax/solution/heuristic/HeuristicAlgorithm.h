@@ -30,24 +30,24 @@
 class HeuristicAlgorithm : public Algorithm {
 protected:
     [[nodiscard]] static int balance(Scheduler scheduler) {
-        auto possiblyLowerMax = scheduler.peekLastAvailableWorker().getTotalWorkTime();
+        auto possiblyLowerMax = scheduler.peekLastAvailableWorker()->getTotalWorkTime();
         int pcMax;
         do {
             pcMax = possiblyLowerMax;
             auto longestWorkingMachine = scheduler.pollLastAvailableWorker();
             auto shortestWorkingMachine = scheduler.pollFirstAvailableWorker();
-            shortestWorkingMachine.addTask(longestWorkingMachine.pollShortestTask());
+            shortestWorkingMachine->addTask(longestWorkingMachine->pollShortestTask());
             scheduler.addWorker(shortestWorkingMachine);
             scheduler.addWorker(longestWorkingMachine);
-            possiblyLowerMax = scheduler.peekLastAvailableWorker().getTotalWorkTime();
+            possiblyLowerMax = scheduler.peekLastAvailableWorker()->getTotalWorkTime();
         } while (possiblyLowerMax < pcMax);
 
         return pcMax;
     }
 
 public:
-    [[nodiscard]] int solve(const Instance &instance) const override {
-        auto machines = instance.getMachines();
+    [[nodiscard]] int solve(const Instance &instance) override {
+        auto machines = instance.getWorkers();
         auto tasks = instance.getTasks();
         auto taskDurations = instance.getTaskDurations();
 
@@ -64,11 +64,11 @@ public:
         int lower = 0, upper = tasks - 1;
         for (int m = 0; m < machines && lower <= upper; ++m) {
             auto machine = scheduler.pollFirstAvailableWorker();
-            while (machine.getTotalWorkTime() < averageWorkTime) {
-                machine.addTask(Task(upper, taskDurations[upper]));
+            while (machine->getTotalWorkTime() < averageWorkTime) {
+                machine->addTask(new Task(upper, taskDurations[upper]));
                 --upper;
-                if (machine.getTotalWorkTime() < averageWorkTime && lower <= upper) {
-                    machine.addTask(Task(lower, taskDurations[lower]));
+                if (machine->getTotalWorkTime() < averageWorkTime && lower <= upper) {
+                    machine->addTask(new Task(lower, taskDurations[lower]));
                     ++lower;
                 } else break;
             }
@@ -77,7 +77,7 @@ public:
 
         while (lower < upper) {
             auto machine = scheduler.pollFirstAvailableWorker();
-            machine.addTask(Task(upper, taskDurations[upper]));
+            machine->addTask(new Task(upper, taskDurations[upper]));
             --upper;
             scheduler.addWorker(machine);
         }

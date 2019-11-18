@@ -26,45 +26,65 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <chrono>
+#include <functional>
+#include <iostream>
 #include "../Algorithm.h"
 
 typedef std::random_device DEVICE;
 typedef std::mt19937 MT;
 typedef std::uniform_real_distribution<double> DISTRIBUTION;
 
-template<typename T, typename U>
+template<class T>
 class GeneticAlgorithm : public Algorithm {
     DEVICE device;
     MT mt;
     DISTRIBUTION mutationDistribution;
 
-    int maxPopulationSize;
-    double mutationChance;
-    int betterMax;
-    int worseMax;
-    std::vector<T> population;
-
-    virtual T from(U u) = 0;
-
-    virtual T breed(const T &t1, const T &t2) = 0;
-
-    virtual void mutate(T &t) = 0;
+    int initialPopulationSize, maxPopulationSize, betterMin, worseMax;
+    double mutationChance, optimizationMinutes;
 
     void breedNewPopulation();
 
     void breedNewMember(int t1, int t2);
 
+    std::vector<T *> population;
+
+    void sortPopulationByScore();
+
+    std::function<bool(T *, T *)> comparator;
+
+protected:
+
+    virtual T *initialMember(const Instance &instance) const = 0;
+
+    virtual T *breed(T *t1, T *t2) const = 0;
+
+    virtual T *mutate(T *t) const = 0;
+
+//    std::function<int(T *)> score;
+
+    virtual int score(T *t) const = 0;
+
 public:
+    enum OPTIMISATION { OPTIMISE_BY_MIN, OPTIMISE_BY_MAX };
+
     GeneticAlgorithm(
             int initialPopulationSize,
             int maxPopulationSize,
             double mutationChance,
             double betterToAllRatio,
-            U u);
+            double optimisationDurationMinutes,
+            OPTIMISATION optimisation
+    );
+
+    int solve(const Instance &instance) override;
+
+    virtual ~GeneticAlgorithm();
 };
 
-template<typename T, typename U>
-void GeneticAlgorithm<T, U>::breedNewPopulation() {
+template<class T>
+void GeneticAlgorithm<T>::breedNewPopulation() {
     auto populationSize = population.size();
     population.reserve(populationSize + populationSize * populationSize);
 
@@ -74,33 +94,79 @@ void GeneticAlgorithm<T, U>::breedNewPopulation() {
         while (++t2 < populationSize) breedNewMember(t1, t2);
     }
 
-    if (population.size() > maxPopulationSize) {
-        std::sort(population.begin(), population.end(), std::greater<>());
-        population.erase(population.begin() + betterMax, population.end() - worseMax);
-    }
+    sortPopulationByScore();
+
+    if (population.size() > maxPopulationSize)
+        population.erase(population.begin() + betterMin, population.end() - worseMax);
 }
 
-template<typename T, typename U>
-GeneticAlgorithm<T, U>::GeneticAlgorithm(
+template<class T>
+GeneticAlgorithm<T>::GeneticAlgorithm(
         int initialPopulationSize,
         int maxPopulationSize,
         double mutationChance,
         double betterToAllRatio,
-        U u):
+        double optimisationDurationMinutes,
+        OPTIMISATION optimisation
+) :
+        initialPopulationSize(initialPopulationSize),
         maxPopulationSize(maxPopulationSize),
         mutationChance(mutationChance),
+        optimizationMinutes(optimisationDurationMinutes),
         mt(device()),
         mutationDistribution(DISTRIBUTION(0, 1)) {
-    betterMax = std::floor(betterToAllRatio * maxPopulationSize);
-    worseMax = maxPopulationSize - betterMax;
-    for (int i = 0; i < initialPopulationSize; ++i) population.push_back(from(u));
+    betterMin = std::floor(betterToAllRatio * maxPopulationSize);
+    worseMax = maxPopulationSize - betterMin;
+
+    switch (optimisation) {
+        case OPTIMISE_BY_MIN:
+            comparator = [](T *t1, T *t2) { return (*t1) < (*t2); };
+            break;
+        case OPTIMISE_BY_MAX:
+            comparator = [](T *t1, T *t2) { return (*t1) > (*t2); };
+            break;
+    }
 }
 
-template<typename T, typename U>
-void GeneticAlgorithm<T, U>::breedNewMember(int t1, int t2) {
-    T t = breed(population[t1], population[t2]);
-    if (mutationChance > mutationDistribution(mt)) mutate(t);
-    population.push_back(t);
+template<class T>
+void GeneticAlgorithm<T>::breedNewMember(int t1, int t2) {
+    auto t = breed(population[t1], population[t2]);
+    if (mutationChance > mutationDistribution(mt)) {
+        population.push_back(mutate(t));
+        delete t;
+    } else population.push_back(t);
 }
 
-#endif //PCMAX_GENETICALGORITHM_H
+template<class T>
+GeneticAlgorithm<T>::~GeneticAlgorithm() {
+    for (T *t : population) delete t;
+}
+
+template<class T>
+int GeneticAlgorithm<T>::solve(const Instance &instance) {
+    population.reserve(initialPopulationSize);
+    population.push_back(initialMember(instance));
+    for (int i = 1; i < initialPopulationSize; ++i) population.push_back(mutate(population[i - 1]));
+
+    sortPopulationByScore();
+    int bestScore = score(population[0]);
+
+    for (
+            auto begin = std::chrono::system_clock::now(), end = begin;
+            std::chrono::duration_cast<std::chrono::minutes>(end - begin).count() < optimizationMinutes;
+            end = std::chrono::system_clock::now()) {
+        std::cerr << "[" << score(population[0]) << ", " << score(*--population.end()) << "]" << std::endl;
+        breedNewPopulation();
+        bestScore = score(population[0]);
+    }
+
+    population.clear();
+    return bestScore;
+}
+
+template<class T>
+void GeneticAlgorithm<T>::sortPopulationByScore() {
+    std::sort(population.begin(), population.end(), comparator);
+}
+
+#endif //PCMAX_GENETIC_ALGORITHM_H

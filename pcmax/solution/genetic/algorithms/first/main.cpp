@@ -20,10 +20,10 @@
 //                                                                            
 //----------------------------------------------------------------------------
 
-#include "../AlgorithmWrapper.h"
-#include "GeneticAlgorithm.h"
+#include "../../../AlgorithmWrapper.h"
+#include "FirstGeneticAlgorithm.h"
 
 int main() {
-//    AlgorithmWrapper::solveWithFeedback(GeneticAlgorithm());
+    AlgorithmWrapper::solveWithFeedback(new FirstGeneticAlgorithm);
     return 0;
 }

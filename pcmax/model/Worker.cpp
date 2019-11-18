@@ -24,14 +24,31 @@
 
 int Worker::getTotalWorkTime() const { return totalWorkTime; }
 
-void Worker::addTask(const Task &task) {
-    totalWorkTime += task.getDuration();
-    tasks.insert(task);
+void Worker::addTask(Task *task) {
+    int duration = task->getDuration();
+    totalWorkTime += duration;
+    tasks[duration].push_back(task);
 }
 
-Task Worker::pollShortestTask() {
-    Task task = *tasks.begin();
-    totalWorkTime -= task.getDuration();
-    tasks.erase(tasks.begin());
+Task *Worker::pollShortestTask() {
+    auto iterator = tasks.begin();
+    auto task = iterator->second.front();
+    iterator->second.pop_front();
+    if (iterator->second.empty()) tasks.erase(iterator);
+    totalWorkTime -= task->getDuration();
     return task;
+}
+
+std::list<Task *> Worker::asTasks() {
+    TASKS taskList;
+    for (const auto &pair: tasks)
+        for (const auto &task : pair.second)
+            taskList.push_back(new Task(task->getID(), task->getDuration()));
+    return taskList;
+}
+
+Worker::~Worker() {
+    for (const auto &pair: tasks)
+        for (const auto &task: pair.second)
+            delete task;
 }

@@ -28,12 +28,13 @@
 #include "../greedy/GreedyAlgorithm.h"
 
 class LongestTimeProcessingAlgorithm : public Algorithm {
+    GreedyAlgorithm greedyAlgorithm;
 public:
-    [[nodiscard]] int solve(const Instance &instance) const override {
+    [[nodiscard]] int solve(const Instance &instance) override {
         int tasks = instance.getTasks();
         int *taskWorkTime = instance.getTaskDurations();
         std::sort(taskWorkTime, taskWorkTime + tasks, std::greater<>());
-        return GreedyAlgorithm().solve(instance);
+        return greedyAlgorithm.solve(instance);
     }
 };
 

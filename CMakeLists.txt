@@ -3,6 +3,20 @@ project(PCMax)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_executable(RandomGenerator
+        pcmax/instance/generator/random/main.cpp
+        pcmax/instance/generator/Generator.h pcmax/instance/generator/Generator.cpp
+        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
+        pcmax/instance/generator/GeneratorWrapper.h pcmax/instance/generator/GeneratorWrapper.cpp
+        pcmax/instance/generator/random/RandomGenerator.h pcmax/instance/generator/random/RandomGenerator.cpp)
+
+add_executable(OptimalGenerator
+        pcmax/instance/generator/optimal/main.cpp
+        pcmax/instance/generator/Generator.h pcmax/instance/generator/Generator.cpp
+        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
+        pcmax/instance/generator/GeneratorWrapper.h pcmax/instance/generator/GeneratorWrapper.cpp
+        pcmax/instance/generator/optimal/OptimalGenerator.h pcmax/instance/generator/optimal/OptimalGenerator.cpp)
+
 add_executable(Greedy
         pcmax/solution/greedy/main.cpp
         pcmax/solution/Algorithm.h pcmax/solution/greedy/GreedyAlgorithm.h
@@ -30,15 +44,6 @@ add_executable(BruteForce
         pcmax/model/Worker.cpp pcmax/model/Worker.h
         pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)
 
-add_executable(Genetic
-        pcmax/solution/genetic/main.cpp
-        pcmax/solution/Algorithm.h pcmax/solution/genetic/GeneticAlgorithm.h
-        pcmax/solution/AlgorithmWrapper.h pcmax/solution/AlgorithmWrapper.cpp
-        pcmax/instance/Instance.h pcmax/instance/Instance.cpp
-        pcmax/model/Task.cpp pcmax/model/Task.h
-        pcmax/model/Worker.cpp pcmax/model/Worker.h
-        pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)
-
 add_executable(LTP
         pcmax/solution/ltp/main.cpp
         pcmax/solution/Algorithm.h pcmax/solution/ltp/LongestTimeProcessingAlgorithm.h
@@ -48,16 +53,21 @@ add_executable(LTP
         pcmax/model/Worker.cpp pcmax/model/Worker.h
         pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)
 
-add_executable(RandomGenerator
-        pcmax/instance/generator/random/main.cpp
-        pcmax/instance/generator/Generator.h pcmax/instance/generator/Generator.cpp
+add_executable(Genetic
+        pcmax/solution/Algorithm.h pcmax/solution/genetic/GeneticAlgorithm.h
+        pcmax/solution/AlgorithmWrapper.h pcmax/solution/AlgorithmWrapper.cpp
         pcmax/instance/Instance.h pcmax/instance/Instance.cpp
-        pcmax/instance/generator/GeneratorWrapper.h pcmax/instance/generator/GeneratorWrapper.cpp
-        pcmax/instance/generator/random/RandomGenerator.h pcmax/instance/generator/random/RandomGenerator.cpp)
+        pcmax/model/Task.cpp pcmax/model/Task.h
+        pcmax/model/Worker.cpp pcmax/model/Worker.h
+        pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)
 
-add_executable(OptimalGenerator
-        pcmax/instance/generator/optimal/main.cpp
-        pcmax/instance/generator/Generator.h pcmax/instance/generator/Generator.cpp
+add_executable(FirstGeneticAlgorithm
+        pcmax/solution/genetic/algorithms/first/main.cpp
+        pcmax/solution/genetic/algorithms/first/FirstGeneticAlgorithm.h
+        pcmax/solution/genetic/algorithms/first/FirstGeneticAlgorithm.cpp
+        pcmax/solution/Algorithm.h pcmax/solution/genetic/GeneticAlgorithm.h
+        pcmax/solution/AlgorithmWrapper.h pcmax/solution/AlgorithmWrapper.cpp
         pcmax/instance/Instance.h pcmax/instance/Instance.cpp
-        pcmax/instance/generator/GeneratorWrapper.h pcmax/instance/generator/GeneratorWrapper.cpp
-        pcmax/instance/generator/optimal/OptimalGenerator.h pcmax/instance/generator/optimal/OptimalGenerator.cpp)
+        pcmax/model/Task.cpp pcmax/model/Task.h
+        pcmax/model/Worker.cpp pcmax/model/Worker.h
+        pcmax/model/Scheduler.cpp pcmax/model/Scheduler.h)

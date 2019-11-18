@@ -27,18 +27,3 @@ Task::Task(int ID, int duration) : ID(ID), duration(duration) {}
 int Task::getID() const { return ID; }
 
 int Task::getDuration() const { return duration; }
-
-bool Task::operator==(const Task &task) const { return ID == task.ID; }
-
-bool Task::operator!=(const Task &task) const { return !(task == *this); }
-
-bool Task::operator<(const Task &task) const {
-    if (duration < task.duration) return true;
-    else return ID < task.ID;
-}
-
-bool Task::operator>(const Task &task) const { return task < *this; }
-
-bool Task::operator<=(const Task &task) const { return !(task < *this); }
-
-bool Task::operator>=(const Task &task) const { return !(*this < task); }

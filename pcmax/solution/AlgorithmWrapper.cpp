@@ -34,9 +34,9 @@ std::string AlgorithmWrapper::getTimeElapsed(
     return stream.str();
 }
 
-void AlgorithmWrapper::solveWithFeedback(const Algorithm &algorithm, const Instance &instance) {
+void AlgorithmWrapper::solveWithFeedback(Algorithm *algorithm, const Instance &instance) {
     auto begin = std::chrono::system_clock::now();
-    auto solution = algorithm.solve(instance);
+    auto solution = algorithm->solve(instance);
     auto end = std::chrono::system_clock::now();
 
     std::string timeElapsed;
@@ -75,7 +75,7 @@ void AlgorithmWrapper::solveWithFeedback(const Algorithm &algorithm, const Insta
     std::cout << "Solution [" << solution << "] found in " << timeElapsed << std::endl;
 }
 
-void AlgorithmWrapper::solveWithFeedback(const Algorithm &algorithm) {
+void AlgorithmWrapper::solveWithFeedback(Algorithm *algorithm) {
     Instance instance;
     std::cin >> instance;
     solveWithFeedback(algorithm, instance);

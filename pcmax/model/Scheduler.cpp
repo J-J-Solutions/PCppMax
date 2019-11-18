@@ -23,45 +23,56 @@
 #include "Scheduler.h"
 
 Scheduler::Scheduler(int workers) {
-    WORKERS init;
-    while (workers--) init.push_back(Worker());
-    this->workers[0] = init;
+    while (workers--) addWorker(new Worker);
 }
 
-void Scheduler::addWorker(const Worker &worker) {
-    workers[worker.getTotalWorkTime()].push_back(worker);
+void Scheduler::addWorker(Worker *worker) {
+    workers[worker->getTotalWorkTime()].push_back(worker);
 }
 
-Worker Scheduler::pollWorker(ITERATOR iterator) {
-    auto machine = iterator->second.front();
+Worker *Scheduler::pollWorker(ITERATOR iterator) {
+    auto worker = iterator->second.front();
     iterator->second.pop_front();
     if (iterator->second.empty()) workers.erase(iterator);
-    return machine;
+    return worker;
 }
 
-Worker Scheduler::peekLastAvailableWorker() const {
+Worker *Scheduler::peekLastAvailableWorker() const {
     return workers.rbegin()->second.front();
 }
 
-Worker Scheduler::pollFirstAvailableWorker() {
+Worker *Scheduler::pollFirstAvailableWorker() {
     return pollWorker(workers.begin());
 }
 
-Worker Scheduler::pollLastAvailableWorker() {
+Worker *Scheduler::pollLastAvailableWorker() {
     return pollWorker(--workers.end());
 }
 
-Worker *Scheduler::toWorkersArray(int size) const {
-    auto machineArray = new Worker[size];
-    int m = 0;
-    for (const auto &pair : this->workers)
-        for (const auto &machine : pair.second)
-            machineArray[m++] = machine;
-    return machineArray;
+WORKERS Scheduler::asWorkers() const {
+    WORKERS list;
+    for (const auto &pair : workers)
+        for (const auto &worker: pair.second)
+            list.push_back(worker);
+    return list;
 }
 
-Scheduler Scheduler::fromWorkersArray(Worker *workers, int size) {
-    Scheduler scheduler(0);
-    for (int m = 0; m < size; ++m) scheduler.addWorker(workers[m]);
+Scheduler *Scheduler::fromWorkers(const WORKERS &workers) {
+    auto scheduler = new Scheduler;
+    for (const auto &worker: workers) scheduler->addWorker(worker);
     return scheduler;
+}
+
+Scheduler::~Scheduler() {
+    for (const auto &pair: workers)
+        for (const auto &worker: pair.second)
+            delete worker;
+}
+
+bool Scheduler::operator<(const Scheduler &rhs) const {
+    return peekLastAvailableWorker()->getTotalWorkTime() < rhs.peekLastAvailableWorker()->getTotalWorkTime();
+}
+
+bool Scheduler::operator>(const Scheduler &rhs) const {
+    return rhs < *this;
 }

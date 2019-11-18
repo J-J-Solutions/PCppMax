@@ -24,6 +24,6 @@
 #include "BruteForceAlgorithm.h"
 
 int main() {
-    AlgorithmWrapper::solveWithFeedback(BruteForceAlgorithm());
+    AlgorithmWrapper::solveWithFeedback(new BruteForceAlgorithm);
     return 0;
 }
